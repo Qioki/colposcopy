@@ -1,0 +1,127 @@
+CREATE TABLE roles (
+    role_id INTEGER NOT NULL CONSTRAINT PK_roles PRIMARY KEY AUTOINCREMENT,
+    name 	TEXT NOT NULL
+);
+
+
+CREATE TABLE permissions (
+    permission_id 	INTEGER NOT NULL CONSTRAINT PK_permissions PRIMARY KEY AUTOINCREMENT,
+    role_id 	    INTEGER NOT NULL,
+    object_name     TEXT NOT NULL,
+    create_new 	    INTEGER NOT NULL,
+    read_own 	    INTEGER NOT NULL,
+    edit_own 	    INTEGER NOT NULL,
+    read_all 	    INTEGER NOT NULL,
+    edit_all 	    INTEGER NOT NULL,
+	CONSTRAINT FK_permissions_roles_role_id FOREIGN KEY (role_id) REFERENCES roles (role_id) ON DELETE RESTRICT
+);
+
+
+CREATE TABLE users (
+    user_id 	INTEGER NOT NULL CONSTRAINT PK_users PRIMARY KEY AUTOINCREMENT,
+    role_id		INTEGER NOT NULL,
+    state 		INTEGER NOT NULL,
+    firstname	TEXT NOT NULL,
+    lastname 	TEXT NOT NULL,
+    patronymic 	TEXT NULL,
+    phone 		TEXT NULL,
+    email 		TEXT NULL,
+    login 		TEXT NULL,
+    password 	TEXT DEFAULT '' NOT NULL,
+    user_data 	TEXT NULL,
+	CONSTRAINT FK_users_roles_role_id FOREIGN KEY (role_id) REFERENCES roles (role_id)
+);
+--CREATE INDEX IX_users_password ON users (password);
+
+
+CREATE TABLE settings (
+    setting_id 	INTEGER NOT NULL CONSTRAINT PK_settings PRIMARY KEY AUTOINCREMENT,
+    user_id		INTEGER NOT NULL,
+    param 		TEXT NOT NULL,
+    value 		TEXT NOT NULL,
+	CONSTRAINT FK_settings_users_user_id FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE RESTRICT
+);
+CREATE INDEX IX_settings_user_id ON settings (user_id);
+
+
+CREATE TABLE patients (
+    patient_id 	INTEGER NOT NULL CONSTRAINT PK_patients PRIMARY KEY AUTOINCREMENT,
+    user_id		INTEGER NOT NULL,
+    state 		INTEGER NOT NULL,
+    firstname	TEXT NOT NULL,
+    lastname 	TEXT NOT NULL,
+    patronymic 	TEXT NULL,
+    phone 		TEXT NULL,
+    email 		TEXT NULL,
+    birthday	DATE NULL,
+    snils 		TEXT NULL,
+    policy 		TEXT NULL,
+    card 		TEXT NULL,
+	CONSTRAINT FK_patients_users_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+CREATE INDEX IX_patients_user_id ON patients (user_id);
+
+
+CREATE TABLE protocols (
+	protocol_id 	INTEGER NOT NULL CONSTRAINT PK_protocols PRIMARY KEY AUTOINCREMENT,
+	state 			INTEGER NOT NULL,
+	scheme			TEXT NOT NULL
+);
+
+
+CREATE TABLE visits (
+	visit_id 		INTEGER NOT NULL CONSTRAINT PK_visits PRIMARY KEY AUTOINCREMENT,
+	user_id			INTEGER NOT NULL,
+	patient_id		INTEGER NOT NULL,
+	protocol_id		INTEGER NOT NULL,
+	visit_date 		DATE NOT NULL,
+	protocol_data	TEXT NOT NULL,
+	CONSTRAINT FK_visits_users_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),
+	CONSTRAINT FK_visits_patients_patient_id FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
+	CONSTRAINT FK_visits_protocols_protocol_id FOREIGN KEY (protocol_id) REFERENCES protocols(protocol_id)
+);
+--    report_id	INTEGER NOT NULL
+CREATE INDEX IX_visits_user_id ON visits (user_id);
+CREATE INDEX IX_visits_patient_id ON visits (patient_id);
+
+
+CREATE TABLE images (
+    image_id 	INTEGER NOT NULL CONSTRAINT PK_images PRIMARY KEY AUTOINCREMENT,
+    width 		INTEGER NOT NULL,
+    height 		INTEGER NOT NULL,
+    format 		TEXT NOT NULL,
+    image_data 	BLOB NULL
+);
+
+
+CREATE TABLE media (
+    media_id 		INTEGER NOT NULL CONSTRAINT PK_media PRIMARY KEY AUTOINCREMENT,
+    visit_id 		INTEGER NOT NULL,
+    
+    media_type		INTEGER NOT NULL,
+    image_id		INTEGER NOT NULL,
+    file_path		TEXT NULL,
+    thumbnail_id 	INTEGER NOT NULL,
+    
+    list_number 	INTEGER NOT NULL,
+    notes 			TEXT NULL,
+    
+    media_data 		TEXT NULL,
+    modification 	TEXT NULL,
+    report_data 	TEXT NULL,
+    
+    CONSTRAINT FK_media_visits_visit_id FOREIGN KEY (visit_id) REFERENCES visits (visit_id),
+    CONSTRAINT FK_media_images_image_id FOREIGN KEY (image_id) REFERENCES images (image_id),
+    CONSTRAINT FK_media_images_thumbnail_id FOREIGN KEY (thumbnail_id) REFERENCES images (image_id)
+);
+CREATE INDEX IX_media_visit_id ON media (visit_id);
+
+
+CREATE TABLE atlases (
+    atlas_id 	INTEGER NOT NULL CONSTRAINT PK_atlases PRIMARY KEY AUTOINCREMENT,
+    user_id		INTEGER NOT NULL,
+    title 		TEXT NOT NULL,
+    tree 		TEXT NOT NULL,
+    is_public	INTEGER NOT NULL,
+	CONSTRAINT FK_atlases_users_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
+) AS Atlas;
