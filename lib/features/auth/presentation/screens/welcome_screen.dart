@@ -1,28 +1,30 @@
 import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/features/auth/presentation/cubits/auth/auth_cubit.dart';
+import 'package:colposcopy/features/auth/presentation/forms/signup_form.dart';
 import 'package:colposcopy/presentation/routes/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var cubit = context.read<AuthCubit>();
     return Scaffold(
       body: Stack(
         children: [
-          // Image.asset('assets/images/welcome_bg.jpg', fit: BoxFit.scaleDown),
-          // Expanded(
-          //     child:
-          //         Image.asset('assets/images/welcome_bg.jpg', fit: BoxFit.cover)),
-          // child const Image(image: AssetImage('assets/background.png'));
-          Container(
-              // decoration: const BoxDecoration(
-              //   image: DecorationImage(
-              //     fit: BoxFit.cover,
-              //     image: AssetImage('assets/images/welcome_bg.jpg'),
-              //   ),
-              // ),
+          Transform.flip(
+            flipX: true,
+            child: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/images/welcome_bg3.jpg'),
+                ),
               ),
+            ),
+          ),
           Row(
             children: [
               const Expanded(
@@ -63,16 +65,23 @@ class WelcomeScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                              onPressed: _onNewUserPressed,
-                              // style: ElevatedButton.styleFrom(
-                              //   shape: const StadiumBorder(),
-                              // ),
+                              onPressed: () {
+                                cubit.clearSignUpForm();
+
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      const AlertDialog(
+                                    content: SignUpForm(),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                );
+                              },
                               child: const Text(Strings.authNewUser),
                             ),
                             const SizedBox(width: 15),
                             ElevatedButton(
-                              onPressed: () => const LoginRoute().push(context),
-                              // onPressed: _onLogInPressed,
+                              onPressed: () => const LoginRoute().go(context),
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
                               ),
@@ -91,7 +100,4 @@ class WelcomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  void _onNewUserPressed() {}
-  void _onLogInPressed() {}
 }

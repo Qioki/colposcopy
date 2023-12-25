@@ -37,10 +37,8 @@ class LoginScreen extends StatelessWidget {
                       formControlName: 'name',
                       textInputAction: TextInputAction.done,
                       controller: fieldTextEditingController,
-                      onSubmitted: (value) {
-                        // cubit.tryLogin();
-                        tryLogin(context, cubit.tryLogin());
-                      },
+                      onSubmitted: (value) =>
+                          tryLogin(context, cubit.tryLogin()), // TODO: edit
                       focusNode: fieldFocusNode,
                       decoration: const InputDecoration(
                         labelText: Strings.userName,
@@ -53,18 +51,11 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 PasswordField(() => tryLogin(context, cubit.tryLogin())),
-                // PasswordField(cubit.tryLogin),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       maximumSize: const Size.fromHeight(50)),
                   onPressed: () => tryLogin(context, cubit.tryLogin()),
-                  //  {
-                  //   cubit.tryLogin().then((value) {
-                  //     if(value == null) return;
-
-                  //   });
-                  // },
                   child: Container(
                     alignment: Alignment.center,
                     width: double.infinity,
@@ -91,12 +82,15 @@ class LoginScreen extends StatelessWidget {
                         fontSize: 14,
                         fontWeight: FontWeight.w400)),
                 TextButton(
-                    onPressed: () async {
+                    onPressed: () {
                       cubit.clearSignUpForm();
-                      return showDialog(
+
+                      showDialog(
                         context: context,
-                        builder: (BuildContext context) =>
-                            const AlertDialog(content: SignUpForm()),
+                        builder: (BuildContext context) => const AlertDialog(
+                          content: SignUpForm(),
+                          backgroundColor: Colors.white,
+                        ),
                       );
                     },
                     child: const Text(Strings.authLogInNewUser,
@@ -173,91 +167,7 @@ class PasswordField extends StatelessWidget {
         // helperText: '',
         // helperStyle: TextStyle(height: 0.7),
         // errorStyle: TextStyle(height: 0.7),
-        // border: OutlineInputBorder(
-        //   borderSide:
-        //       BorderSide(width: 3, color: Colors.greenAccent), //<-- SEE HERE
-        //   borderRadius: BorderRadius.circular(25),
-        // ),
       ),
     );
   }
 }
-
-// return Container(
-//   alignment: Alignment.center,
-//   height: 50,
-//   child: TextField(
-//     controller: fieldTextEditingController,
-//     focusNode: fieldFocusNode,
-//     // onSubmitted: (v) => onFieldSubmitted(),
-//     decoration: InputDecoration(
-//       contentPadding:
-//           const EdgeInsets.symmetric(horizontal: 10),
-//       labelText: Strings.userName,
-//       border: OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(25),
-//       ),
-//       // contentPadding:
-//       //     EdgeInsets.only(bottom: 18, left: 15, right: 15),
-//     ),
-//     maxLines: 1,
-//   ),
-// );
-
-// class AutocompleteBasicUserExample extends StatelessWidget {
-//   const AutocompleteBasicUserExample({super.key});
-
-//   static const List<User> _userOptions = <User>[
-//     User(name: 'Alice', email: 'alice@example.com'),
-//     User(name: 'Bob', email: 'bob@example.com'),
-//     User(name: 'Charlie', email: 'charlie123@gmail.com'),
-//   ];
-
-//   static String _displayStringForOption(User option) => option.name;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Autocomplete<User>(
-//       displayStringForOption: _displayStringForOption,
-//       optionsBuilder: (TextEditingValue textEditingValue) {
-//         if (textEditingValue.text == '') {
-//           return const Iterable<User>.empty();
-//         }
-//         return _userOptions.where((User option) {
-//           return option
-//               .toString()
-//               .contains(textEditingValue.text.toLowerCase());
-//         });
-//       },
-//       onSelected: (User selection) {
-//         debugPrint('You just selected ${_displayStringForOption(selection)}');
-//       },
-//     );
-//   }
-// }
-// @immutable
-// class User {
-//   const User({
-//     required this.email,
-//     required this.name,
-//   });
-
-//   final String email;
-//   final String name;
-
-//   @override
-//   String toString() {
-//     return '$name, $email';
-//   }
-
-//   @override
-//   bool operator ==(Object other) {
-//     if (other.runtimeType != runtimeType) {
-//       return false;
-//     }
-//     return other is User && other.name == name && other.email == email;
-//   }
-
-//   @override
-//   int get hashCode => Object.hash(email, name);
-// }

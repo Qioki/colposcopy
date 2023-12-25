@@ -19,38 +19,38 @@ mixin _$PatientsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Patient> items) search,
+    required TResult Function(List<DataRow2> items) filtered,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(List<Patient> items)? search,
+    TResult? Function(List<DataRow2> items)? filtered,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Patient> items)? search,
+    TResult Function(List<DataRow2> items)? filtered,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Search value) search,
+    required TResult Function(_Filtered value) filtered,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Search value)? search,
+    TResult? Function(_Filtered value)? filtered,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Search value)? search,
+    TResult Function(_Filtered value)? filtered,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -113,7 +113,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Patient> items) search,
+    required TResult Function(List<DataRow2> items) filtered,
   }) {
     return initial();
   }
@@ -122,7 +122,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(List<Patient> items)? search,
+    TResult? Function(List<DataRow2> items)? filtered,
   }) {
     return initial?.call();
   }
@@ -131,7 +131,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Patient> items)? search,
+    TResult Function(List<DataRow2> items)? filtered,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -144,7 +144,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Search value) search,
+    required TResult Function(_Filtered value) filtered,
   }) {
     return initial(this);
   }
@@ -153,7 +153,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Search value)? search,
+    TResult? Function(_Filtered value)? filtered,
   }) {
     return initial?.call(this);
   }
@@ -162,7 +162,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Search value)? search,
+    TResult Function(_Filtered value)? filtered,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -177,20 +177,20 @@ abstract class _Initial implements PatientsState {
 }
 
 /// @nodoc
-abstract class _$$SearchImplCopyWith<$Res> {
-  factory _$$SearchImplCopyWith(
-          _$SearchImpl value, $Res Function(_$SearchImpl) then) =
-      __$$SearchImplCopyWithImpl<$Res>;
+abstract class _$$FilteredImplCopyWith<$Res> {
+  factory _$$FilteredImplCopyWith(
+          _$FilteredImpl value, $Res Function(_$FilteredImpl) then) =
+      __$$FilteredImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Patient> items});
+  $Res call({List<DataRow2> items});
 }
 
 /// @nodoc
-class __$$SearchImplCopyWithImpl<$Res>
-    extends _$PatientsStateCopyWithImpl<$Res, _$SearchImpl>
-    implements _$$SearchImplCopyWith<$Res> {
-  __$$SearchImplCopyWithImpl(
-      _$SearchImpl _value, $Res Function(_$SearchImpl) _then)
+class __$$FilteredImplCopyWithImpl<$Res>
+    extends _$PatientsStateCopyWithImpl<$Res, _$FilteredImpl>
+    implements _$$FilteredImplCopyWith<$Res> {
+  __$$FilteredImplCopyWithImpl(
+      _$FilteredImpl _value, $Res Function(_$FilteredImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -198,23 +198,23 @@ class __$$SearchImplCopyWithImpl<$Res>
   $Res call({
     Object? items = null,
   }) {
-    return _then(_$SearchImpl(
+    return _then(_$FilteredImpl(
       null == items
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
-              as List<Patient>,
+              as List<DataRow2>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$SearchImpl implements _Search {
-  const _$SearchImpl(final List<Patient> items) : _items = items;
+class _$FilteredImpl implements _Filtered {
+  const _$FilteredImpl(final List<DataRow2> items) : _items = items;
 
-  final List<Patient> _items;
+  final List<DataRow2> _items;
   @override
-  List<Patient> get items {
+  List<DataRow2> get items {
     if (_items is EqualUnmodifiableListView) return _items;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_items);
@@ -222,14 +222,14 @@ class _$SearchImpl implements _Search {
 
   @override
   String toString() {
-    return 'PatientsState.search(items: $items)';
+    return 'PatientsState.filtered(items: $items)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SearchImpl &&
+            other is _$FilteredImpl &&
             const DeepCollectionEquality().equals(other._items, _items));
   }
 
@@ -240,36 +240,36 @@ class _$SearchImpl implements _Search {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SearchImplCopyWith<_$SearchImpl> get copyWith =>
-      __$$SearchImplCopyWithImpl<_$SearchImpl>(this, _$identity);
+  _$$FilteredImplCopyWith<_$FilteredImpl> get copyWith =>
+      __$$FilteredImplCopyWithImpl<_$FilteredImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Patient> items) search,
+    required TResult Function(List<DataRow2> items) filtered,
   }) {
-    return search(items);
+    return filtered(items);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(List<Patient> items)? search,
+    TResult? Function(List<DataRow2> items)? filtered,
   }) {
-    return search?.call(items);
+    return filtered?.call(items);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Patient> items)? search,
+    TResult Function(List<DataRow2> items)? filtered,
     required TResult orElse(),
   }) {
-    if (search != null) {
-      return search(items);
+    if (filtered != null) {
+      return filtered(items);
     }
     return orElse();
   }
@@ -278,39 +278,39 @@ class _$SearchImpl implements _Search {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
-    required TResult Function(_Search value) search,
+    required TResult Function(_Filtered value) filtered,
   }) {
-    return search(this);
+    return filtered(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
-    TResult? Function(_Search value)? search,
+    TResult? Function(_Filtered value)? filtered,
   }) {
-    return search?.call(this);
+    return filtered?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
-    TResult Function(_Search value)? search,
+    TResult Function(_Filtered value)? filtered,
     required TResult orElse(),
   }) {
-    if (search != null) {
-      return search(this);
+    if (filtered != null) {
+      return filtered(this);
     }
     return orElse();
   }
 }
 
-abstract class _Search implements PatientsState {
-  const factory _Search(final List<Patient> items) = _$SearchImpl;
+abstract class _Filtered implements PatientsState {
+  const factory _Filtered(final List<DataRow2> items) = _$FilteredImpl;
 
-  List<Patient> get items;
+  List<DataRow2> get items;
   @JsonKey(ignore: true)
-  _$$SearchImplCopyWith<_$SearchImpl> get copyWith =>
+  _$$FilteredImplCopyWith<_$FilteredImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
