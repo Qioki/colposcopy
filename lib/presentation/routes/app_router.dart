@@ -72,16 +72,11 @@ class LoginRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) =>
       CustomTransitionPage(
         key: state.pageKey,
+        transitionDuration: const Duration(milliseconds: 300),
         child: const LoginScreen(),
-        transitionDuration: const Duration(milliseconds: 100),
         transitionsBuilder: (_, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(-0.4, 0),
-              end: Offset.zero,
-            ).animate(
-                CurvedAnimation(parent: animation, curve: Curves.easeOut)),
-            // opacity: CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+          return FadeTransition(
+            opacity: CurveTween(curve: Curves.easeInOutCirc).animate(animation),
             child: child,
           );
         },
@@ -95,8 +90,8 @@ class PatientsRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) =>
       CustomTransitionPage(
         key: state.pageKey,
+        transitionDuration: const Duration(milliseconds: 300),
         child: const PatientsScreen(),
-        transitionDuration: const Duration(milliseconds: 150),
         transitionsBuilder: (_, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: CurveTween(curve: Curves.easeInOutCirc).animate(animation),

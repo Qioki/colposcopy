@@ -43,6 +43,27 @@ class AppTheme {
     // backgroundColor: AppColor.border,
     primaryColor: AppColors.primary,
     useMaterial3: true,
+    dataTableTheme: DataTableThemeData(
+      dataRowMaxHeight: 35,
+      dataRowMinHeight: 32,
+
+      // dataRowColor: MaterialStateProperty.all(
+      //   Colors.transparent,
+      // ),
+
+      headingRowColor:
+          MaterialStateColor.resolveWith((states) => AppColors.primary),
+      horizontalMargin: 12,
+      columnSpacing: 4,
+      headingRowHeight: 32,
+      dividerThickness: 0,
+      headingTextStyle: const TextStyle(color: Colors.white),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+              strokeAlign: BorderSide.strokeAlignOutside,
+              color: AppColors.primary)),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       border: OutlineInputBorder(

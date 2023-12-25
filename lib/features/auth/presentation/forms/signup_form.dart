@@ -1,6 +1,5 @@
 import 'package:colposcopy/core/constants/string.dart';
-import 'package:colposcopy/domain/models/user/user.dart';
-import 'package:colposcopy/presentation/routes/app_router.dart';
+import 'package:colposcopy/presentation/widgets/logo_zmir_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -23,8 +22,8 @@ class SignUpForm extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const FlutterLogo(size: 80),
-                const SizedBox(height: 30),
+                const LogoZmirWidget(160),
+                const SizedBox(height: 40),
                 ReactiveForm(
                   formGroup: cubit.signUpForm,
                   child: SizedBox(
@@ -35,11 +34,7 @@ class SignUpForm extends StatelessWidget {
                           .map((e) => ReactiveTextField<String>(
                                 formControlName: e.formKey,
                                 onSubmitted: (control) =>
-                                    trySignUp(context, cubit.trySignUp()),
-                                // cubit.trySignUp().then((value) => {
-                                //       if (value != null)
-                                //         PatientsRoute(value).push(context),
-                                //     }),
+                                    cubit.trySignUp(context),
                                 decoration: InputDecoration(
                                   constraints: const BoxConstraints(
                                       maxHeight: 65, maxWidth: 200),
@@ -55,8 +50,7 @@ class SignUpForm extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                    onPressed: () => trySignUp(context, cubit.trySignUp()),
-                    // onPressed: () => cubit.trySignUp(),
+                    onPressed: () => cubit.trySignUp(context),
                     child: const SizedBox(
                       width: 90,
                       height: 30,
@@ -79,9 +73,4 @@ class SignUpForm extends StatelessWidget {
       ),
     );
   }
-
-  // TODO
-  void trySignUp(BuildContext context, Future<User?> trySignUp) async =>
-      trySignUp.then(
-          (value) => {if (value != null) const PatientsRoute().go(context)});
 }

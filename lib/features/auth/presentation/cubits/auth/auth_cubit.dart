@@ -4,6 +4,7 @@ import 'package:colposcopy/domain/controllers/security_controller.dart';
 import 'package:colposcopy/domain/models/user/user.dart';
 import 'package:colposcopy/domain/repositories/users.dart';
 import 'package:colposcopy/features/app/domain/controllers/app_controller_impl.dart';
+import 'package:colposcopy/presentation/routes/app_router.dart';
 import 'package:colposcopy/presentation/validators/required_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -31,96 +32,99 @@ class AuthCubit extends Cubit<AuthState> {
 
   // LOGIN FORM
   final loginForm = fb.group({
-    FormKeys.name: FormControl<String>(
+    AuthFormKeys.login: FormControl<String>(
       value: '',
       // validators: [const RequiredCustomValidator()],
     ),
-    FormKeys.password: FormControl<String>(value: ''),
-    FormKeys.error: FormControl<String>(value: ''),
+    AuthFormKeys.password: FormControl<String>(value: ''),
+    AuthFormKeys.error: FormControl<String>(value: ''),
   }, [
     const RequiredCustomValidator()
   ]);
 
-// TODO [Validators.maxLength(10)]
+  // TODO [Validators.maxLength(10)]
   // SIGNUP FORM
   final signUpForm = fb.group({
-    FormKeys.firstname: FormControl<String>(
+    AuthFormKeys.firstname: FormControl<String>(
       value: '',
       validators: [const RequiredCustomValidator()],
     ),
-    FormKeys.lastname: FormControl<String>(
+    AuthFormKeys.lastname: FormControl<String>(
       value: '',
       validators: [const RequiredCustomValidator()],
     ),
-    FormKeys.patronymic: FormControl<String>(value: ''),
-    FormKeys.phone: FormControl<String>(value: ''),
-    FormKeys.email: FormControl<String>(value: ''),
-    FormKeys.password: FormControl<String>(value: ''),
+    AuthFormKeys.patronymic: FormControl<String>(value: ''),
+    AuthFormKeys.phone: FormControl<String>(value: ''),
+    AuthFormKeys.email: FormControl<String>(value: ''),
+    AuthFormKeys.password: FormControl<String>(value: ''),
   });
 
   final List<FromData> formFields = [
-    FromData(FormKeys.firstname, Strings.personName, Icons.person),
-    FromData(FormKeys.lastname, Strings.personLastname, Icons.person),
-    FromData(FormKeys.patronymic, Strings.personPatronymic, Icons.person),
-    FromData(FormKeys.phone, Strings.personPhone, Icons.phone),
-    FromData(FormKeys.email, Strings.personEmail, Icons.email),
-    FromData(FormKeys.password, Strings.userPassword, Icons.lock),
+    FromData(AuthFormKeys.firstname, Strings.personName, Icons.person),
+    FromData(AuthFormKeys.lastname, Strings.personLastname, Icons.person),
+    FromData(AuthFormKeys.patronymic, Strings.personPatronymic, Icons.person),
+    FromData(AuthFormKeys.phone, Strings.personPhone, Icons.phone),
+    FromData(AuthFormKeys.email, Strings.personEmail, Icons.email),
+    FromData(AuthFormKeys.password, Strings.userPassword, Icons.lock),
   ];
 
   User? selection;
-  void selectUser(User? selection) {
-    print(selection);
-    this.selection = selection;
-  }
+  void selectUser(User? selection) => this.selection = selection;
 
-  Future<User?> tryLogin() async {
-    if (selection == null || selection!.userId == null) {
-      return null;
-    }
+  void tryLogin(BuildContext context) async {
+    if (selection == null || selection!.userId == null) return null;
 
-    String password = loginForm.control('password').value ?? '';
+    String password = loginForm.control(AuthFormKeys.password).value ?? '';
     if (password.isNotEmpty) {
       password = SecurityController.hashPassword(password);
     }
 
     var user = await _repository.getUserWithIdAndPassword(
         selection!.userId!, password);
-    print(user);
 
-    if (user == null) {
-      return null;
-    }
+    if (user == null) return null;
 
-    _appController.onLogin(user);
+    onLogin(user);
 
-    loginForm.reset();
-    selection = null;
-    return user;
+    // TODO: fix future context
+    const PatientsRoute().go(context);
   }
 
-  Future<User?> trySignUp() async {
-    print('trySignUp ${signUpForm.valid}');
-    print('${signUpForm.value}');
+  void trySignUp(BuildContext context) async {
     signUpForm.markAllAsTouched();
 
-    if (!signUpForm.valid) {
-      return null;
+    if (!signUpForm.valid) return null;
+
+    var userJson = signUpForm.value;
+
+    var password = '';
+    if (userJson[AuthFormKeys.password] is String &&
+        userJson[AuthFormKeys.password] != '') {
+      password = userJson[AuthFormKeys.password] as String;
+      if (password.isNotEmpty) {
+        password = SecurityController.hashPassword(password);
+      }
     }
 
-    String password = signUpForm.control('password').value ?? '';
-    if (password.isNotEmpty) {
-      password = SecurityController.hashPassword(password);
-    }
-    signUpForm.control('password').value = password;
-
-    var userId = await _repository.addUser(User.fromJson(signUpForm.value));
+    // TODO: check if user exists
+    var userId = await _repository.addUser(User.fromJson(userJson));
     var user = await _repository.getUserWithIdAndPassword(userId, password);
-    if (user == null) {
-      return null;
-    }
+    if (user == null) return null;
+
+    onLogin(user);
+
+    // TODO: fix future context
+    const PatientsRoute().go(context);
+  }
+
+  void onLogin(User user) {
+    print(user);
+    selection = null;
     _appController.onLogin(user);
-    signUpForm.reset();
-    return await _repository.getUserById(userId);
+    Future.delayed(const Duration(seconds: 1), () {
+      signUpForm.reset();
+      loginForm.reset();
+    });
   }
 
   void clearSignUpForm() {
@@ -149,8 +153,8 @@ class AuthCubit extends Cubit<AuthState> {
           : false);
 }
 
-class FormKeys {
-  static const name = 'name';
+class AuthFormKeys {
+  static const login = 'login';
   static const password = 'password';
   static const firstname = 'firstname';
   static const lastname = 'lastname';

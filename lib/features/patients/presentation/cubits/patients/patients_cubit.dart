@@ -9,13 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 part 'patients_state.dart';
 part 'patients_cubit.freezed.dart';
 
 @injectable
 class PatientsCubit extends Cubit<PatientsState> {
-  // final String _dateOnlyFormat = 'dd.MM.yyyy';
   final DateFormat _dateOnlyFormatter = DateFormat('dd.MM.yyyy');
 
   PatientsCubit(this._repository) : super(const PatientsState.initial()) {
@@ -25,6 +25,8 @@ class PatientsCubit extends Cubit<PatientsState> {
       onSearchTextChanged(searchText);
     });
   }
+  final PatientsRepository _repository;
+
   StreamSubscription<List<Patient>>? _subscription;
 
   List<Patient> patients = [];
@@ -35,9 +37,15 @@ class PatientsCubit extends Cubit<PatientsState> {
   Patient? selectedPatient;
   int selectedRowIndex = -1;
 
-  final PatientsRepository _repository;
+  final signUpForm = fb.group({
+    SearchFormKeys.search: FormControl<String>(value: ''),
+  });
 
-  tryOpenPatient() {}
+  void tryOpenPatient() {}
+
+  bool tryLogout() {
+    return true;
+  }
 
   void onSearchTextChanged(String text) async {
     selectedPatient = null;
@@ -57,18 +65,11 @@ class PatientsCubit extends Cubit<PatientsState> {
     prepareDataRows();
   }
 
-  // final StringBuffer stringBuffer = StringBuffer([]);
-  bool _ifTextContaints(Patient item, String textItem) {
-    var stringBuffer = StringBuffer([
-      item.lastname.toLowerCase(),
-      item.firstname.toLowerCase(),
-      item.patronymic?.toLowerCase(),
-      item.phone?.toLowerCase(),
-      item.email?.toLowerCase(),
-      item.snils?.toLowerCase(),
-    ]);
-
-    return stringBuffer.toString().contains(textItem);
+  void onRowSelectChanged(Patient patient) {
+    print('onRowSelectChanged ${patient.firstname}');
+    selectedPatient = patient;
+    selectedRowIndex = filteredPatients.indexOf(patient);
+    prepareDataRows();
   }
 
   void prepareDataRows() {
@@ -76,38 +77,59 @@ class PatientsCubit extends Cubit<PatientsState> {
     emit(PatientsState.filtered(filteredRows));
   }
 
+  Timer doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
+  Patient? lastPressedPatient;
+
   DataRow2 toDataRow(Patient patient) {
     var selected = patient == selectedPatient;
     var row = DataRow2(
-      cells: getCells(patient),
+      cells: getCells(patient, selected),
       selected: selected,
       onSelectChanged: (value) {
         print('value $value $patient');
         onRowSelectChanged(patient);
+        if (doubleTabTimer.isActive) {
+          print('doubleTapEvent ${lastPressedPatient == patient}');
+        } else {
+          lastPressedPatient = patient;
+          doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
+        }
       },
-      // onDoubleTap: () {
-      //   print('onDoubleTap');
-      // }
+      // onSecondaryTapDown: (details) {},
     );
     return row;
   }
 
-  void onRowSelectChanged(Patient patient) {
-    selectedPatient = patient;
-    selectedRowIndex = filteredPatients.indexOf(patient);
-    prepareDataRows();
+  // TODO: selected style
+  List<DataCell> getCells(Patient e, bool selected) {
+    FontWeight? fontWeight = selected ? FontWeight.w600 : null;
+    return [
+      DataCell(Text(
+        '${e.lastname} ${e.firstname} ${e.patronymic ?? ''}',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      DataCell(Text(
+        e.birthday == null ? '' : _dateOnlyFormatter.format(e.birthday!),
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      DataCell(Text(
+        e.phone ?? '',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      DataCell(Text(
+        e.email ?? '',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      DataCell(Text(
+        e.snils ?? '',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      DataCell(Text(
+        e.policy ?? '',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+    ];
   }
-
-  List<DataCell> getCells(Patient e) => [
-        DataCell(Text('${e.lastname} ${e.firstname} ${e.patronymic ?? ''}')),
-        DataCell(Text(
-            e.birthday == null ? '' : _dateOnlyFormatter.format(e.birthday!))),
-        // DataCell(Text(e.birthday == null ? '' : e.birthday!.toString())),
-        DataCell(Text(e.phone ?? '')),
-        DataCell(Text(e.email ?? '')),
-        DataCell(Text(e.snils ?? '')),
-        DataCell(Text(e.policy ?? '')),
-      ];
 
   var patientColumns = const [
     DataColumn(label: Text(Strings.patientFullnameShort)),
@@ -118,9 +140,29 @@ class PatientsCubit extends Cubit<PatientsState> {
     DataColumn(label: Text(Strings.patientPolicy)),
   ];
 
+  // Search
+  bool _ifTextContaints(Patient item, String textItem) {
+    var stringBuffer = StringBuffer([
+      item.lastname.toLowerCase(),
+      item.firstname.toLowerCase(),
+      item.patronymic?.toLowerCase(),
+      item.phone?.toLowerCase(),
+      item.email?.toLowerCase(),
+      item.snils?.toLowerCase(),
+    ]);
+    return stringBuffer.toString().contains(textItem);
+  }
+
   @override
   Future<void> close() {
     _subscription?.cancel();
     return super.close();
   }
+}
+
+class SearchFormKeys {
+  static const search = 'search';
+  static const firstname = 'firstname';
+  static const lastname = 'lastname';
+  static const patronymic = 'patronymic';
 }
