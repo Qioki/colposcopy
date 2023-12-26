@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'image.freezed.dart';
 // part 'image.g.dart';
 
-@Freezed()
+@Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Image with _$Image {
   const factory Image({
     required int imageId,

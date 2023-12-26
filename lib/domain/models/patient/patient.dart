@@ -14,7 +14,7 @@ class Patient with _$Patient {
     String? patronymic,
     String? phone,
     String? email,
-    DateTime? birthday,
+    DateTime? birthdate,
     String? snils,
     String? policy,
     String? card,

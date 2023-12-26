@@ -61,3 +61,11 @@ windows/runner/utils.h
 windows/runner/win32_window.cpp
 windows/runner/win32_window.h
 windows/runner/resources/app_icon.ico
+Database/
+test/widget_test.dart
+devtools_options.yaml
+
+
+*.g.dart
+*.freezed.dart
+lib/di/locator.config.dart

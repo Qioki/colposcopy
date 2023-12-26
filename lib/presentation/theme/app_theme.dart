@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
   static const Color primary = Color.fromARGB(255, 105, 153, 220);
+  static const Color primaryLight = Color.fromARGB(255, 245, 249, 255);
+  // static const Color primaryLight = Color.fromARGB(255, 240, 245, 252);
   static const Color test = Color.fromARGB(255, 82, 255, 151);
   static const Color onErrorAccent = Color.fromARGB(255, 238, 85, 95);
 }
@@ -43,39 +45,26 @@ class AppTheme {
     // backgroundColor: AppColor.border,
     primaryColor: AppColors.primary,
     useMaterial3: true,
-    dataTableTheme: DataTableThemeData(
-      dataRowMaxHeight: 35,
-      dataRowMinHeight: 32,
-
-      // dataRowColor: MaterialStateProperty.all(
-      //   Colors.transparent,
-      // ),
-
-      headingRowColor:
-          MaterialStateColor.resolveWith((states) => AppColors.primary),
-      horizontalMargin: 12,
-      columnSpacing: 4,
-      headingRowHeight: 32,
-      dividerThickness: 0,
-      headingTextStyle: const TextStyle(color: Colors.white),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-              strokeAlign: BorderSide.strokeAlignOutside,
-              color: AppColors.primary)),
-    ),
-    inputDecorationTheme: InputDecorationTheme(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+    inputDecorationTheme: const InputDecorationTheme(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.all(Radius.circular(25)),
       ),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderSide: BorderSide(color: AppColors.primary, width: 0.35)),
       // focusedBorder: OutlineInputBorder(
       //   borderSide:
       //       BorderSide(width: 3, color: Colors.greenAccent), //<-- SEE HERE
       //   // borderRadius: BorderRadius.circular(25),
       // ),
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderSide: BorderSide(
+            width: 1.5,
+            color: AppColors.primary,
+          )),
     ),
-    // fontFamily: appFont,
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
@@ -91,5 +80,26 @@ class AppTheme {
               fontWeight: FontWeight.w400,
             ))),
     textTheme: GoogleFonts.latoTextTheme(),
+    dataTableTheme: DataTableThemeData(
+      dataRowMaxHeight: 35,
+      dataRowMinHeight: 32,
+      // dataRowColor: MaterialStateProperty.all(
+      //   Colors.transparent,
+      // ),
+      headingRowColor:
+          MaterialStateColor.resolveWith((states) => AppColors.primary),
+      horizontalMargin: 12,
+      columnSpacing: 4,
+      headingRowHeight: 32,
+      dividerThickness: 0,
+      headingTextStyle: const TextStyle(color: Colors.white),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+              strokeAlign: BorderSide.strokeAlignOutside,
+              color: AppColors.primary)),
+    ),
+    // fontFamily: appFont,
   );
 }

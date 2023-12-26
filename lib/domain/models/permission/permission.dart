@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'permission.freezed.dart';
 // part 'permission.g.dart';
 
-@Freezed()
+@Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Permission with _$Permission {
   const factory Permission({
     required int permissionId,

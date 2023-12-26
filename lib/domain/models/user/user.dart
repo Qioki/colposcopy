@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user.freezed.dart';
 part 'user.g.dart';
 
-@Freezed() //copyWith: true
+@Freezed(copyWith: false, equal: false, toStringOverride: false)
 class User with _$User {
   const factory User({
     int? userId,

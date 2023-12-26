@@ -1,7 +1,8 @@
+import 'package:colposcopy/core/constants/app_pages.dart';
 import 'package:colposcopy/core/constants/string.dart';
 import 'package:colposcopy/domain/models/user/user.dart';
 import 'package:colposcopy/features/auth/presentation/cubits/auth/auth_cubit.dart';
-import 'package:colposcopy/features/auth/presentation/forms/signup_form.dart';
+import 'package:colposcopy/presentation/routes/app_router.dart';
 import 'package:colposcopy/presentation/widgets/logo_zmir_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -40,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                         formControlName: AuthFormKeys.login,
                         textInputAction: TextInputAction.done,
                         controller: fieldTextEditingController,
-                        onSubmitted: (value) => cubit.tryLogin(context),
+                        onSubmitted: (value) => cubit.tryLogin(),
                         focusNode: fieldFocusNode,
                         decoration: const InputDecoration(
                           labelText: Strings.userName,
@@ -49,15 +50,15 @@ class LoginScreen extends StatelessWidget {
                     },
                     optionsViewBuilder: (context, onSelected, options) =>
                         AutocmpletePopupWidget(onSelected, options),
-                    onSelected: (User selection) => cubit.selectUser(selection),
+                    onSelected: cubit.selectUser,
                   ),
                   const SizedBox(height: 10),
-                  PasswordField(() => cubit.tryLogin(context)),
+                  PasswordField(cubit.tryLogin),
                   const SizedBox(height: 30),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         maximumSize: const Size.fromHeight(50)),
-                    onPressed: () => cubit.tryLogin(context),
+                    onPressed: cubit.tryLogin,
                     child: Container(
                       alignment: Alignment.center,
                       width: double.infinity,
@@ -87,13 +88,7 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         cubit.clearSignUpForm();
 
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => const AlertDialog(
-                            content: SignUpForm(),
-                            backgroundColor: Colors.white,
-                          ),
-                        );
+                        AppRouter.goModal(Modals.signUp, context);
                       },
                       child: const Text(Strings.authLogInNewUser,
                           style: TextStyle(
@@ -152,15 +147,11 @@ class PasswordField extends StatelessWidget {
   final void Function() onSubmitted;
 
   @override
-  Widget build(BuildContext context) {
-    return ReactiveTextField<String>(
-      formControlName: AuthFormKeys.password,
-      obscureText: true,
-      textInputAction: TextInputAction.done,
-      onSubmitted: (value) => onSubmitted(),
-      decoration: const InputDecoration(
-        labelText: Strings.userPassword,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ReactiveTextField<String>(
+        formControlName: AuthFormKeys.password,
+        obscureText: true,
+        textInputAction: TextInputAction.done,
+        onSubmitted: (value) => onSubmitted(),
+        decoration: const InputDecoration(labelText: Strings.userPassword),
+      );
 }

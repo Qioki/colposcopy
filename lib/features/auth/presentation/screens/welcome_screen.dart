@@ -1,6 +1,6 @@
+import 'package:colposcopy/core/constants/app_pages.dart';
 import 'package:colposcopy/core/constants/string.dart';
 import 'package:colposcopy/features/auth/presentation/cubits/auth/auth_cubit.dart';
-import 'package:colposcopy/features/auth/presentation/forms/signup_form.dart';
 import 'package:colposcopy/presentation/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,14 +68,7 @@ class WelcomeScreen extends StatelessWidget {
                               onPressed: () {
                                 cubit.clearSignUpForm();
 
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      const AlertDialog(
-                                    content: SignUpForm(),
-                                    backgroundColor: Colors.white,
-                                  ),
-                                );
+                                AppRouter.goModal(Modals.signUp, context);
                               },
                               child: const Text(Strings.authNewUser),
                             ),

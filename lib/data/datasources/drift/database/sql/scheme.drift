@@ -53,7 +53,7 @@ CREATE TABLE patients (
     patronymic 	TEXT NULL,
     phone 		TEXT NULL,
     email 		TEXT NULL,
-    birthday	DATE NULL,
+    birthdate	DATE NULL,
     snils 		TEXT NULL,
     policy 		TEXT NULL,
     card 		TEXT NULL,

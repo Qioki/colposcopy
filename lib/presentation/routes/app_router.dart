@@ -1,11 +1,15 @@
 import 'package:colposcopy/core/constants/app_pages.dart';
+import 'package:colposcopy/di/locator.dart';
+import 'package:colposcopy/features/auth/presentation/forms/signup_form.dart';
 import 'package:colposcopy/features/auth/presentation/screens/login_screen.dart';
 import 'package:colposcopy/features/auth/presentation/screens/welcome_screen.dart';
+import 'package:colposcopy/features/patient/presentation/forms/patient_card_form.dart';
 import 'package:colposcopy/features/patient/presentation/screens/patient_screen.dart';
 import 'package:colposcopy/features/patients/presentation/screens/patients_screen.dart';
 import 'package:colposcopy/features/visit/presentation/screens/visit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:injectable/injectable.dart';
 
 part 'app_router.g.dart';
 
@@ -24,36 +28,58 @@ part 'app_router.g.dart';
   Visit
 
 */
+@singleton
 class AppRouter {
-  AppRouter._();
+  // AppRouter._();
 
-  static GoRouter get router => GoRouter(
-        // debugLogDiagnostics: true,
-        initialLocation: Pages.patients,
-        routes: $appRoutes,
-        // redirect: (BuildContext context, GoRouterState state) {
-        //   return null;
-        // },
-      );
+  late GoRouter _router;
+  GoRouter initRouter() {
+    _router = GoRouter(
+      initialLocation: Pages.welcome,
+      routes: $appRoutes,
+      // redirect: (BuildContext context, GoRouterState state) { return null; },
+    );
+    return _router;
+  }
+
+  static void goModal(String name, BuildContext context) {
+    switch (name) {
+      case Modals.patientCard:
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const AlertDialog(
+            content: PatientCardForm(),
+            backgroundColor: Colors.white,
+          ),
+        );
+        break;
+      case Modals.signUp:
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const AlertDialog(
+            content: SignUpForm(),
+            backgroundColor: Colors.white,
+          ),
+        );
+        break;
+      default:
+    }
+  }
+
+  void go(String path) => _router.go(path);
 }
 
-@TypedGoRoute<WelcomeRoute>(
-  path: Pages.welcome,
-  // routes: <TypedGoRoute<GoRouteData>>[
-  //   TypedGoRoute<FamilyRoute>(
-  //     path: 'family/:fid',
-  //     routes: <TypedGoRoute<GoRouteData>>[
-  //       TypedGoRoute<PersonRoute>(
-  //         path: 'person/:pid',
-  //         routes: <TypedGoRoute<GoRouteData>>[
-  //           TypedGoRoute<PersonDetailsRoute>(path: 'details/:details'),
-  //         ],
-  //       ),
-  //     ],
-  //   ),
-  //   TypedGoRoute<FamilyCountRoute>(path: 'family-count/:count'),
-  // ],
-)
+@TypedGoRoute<DebugRoute>(path: Pages.debug)
+class DebugRoute extends GoRouteData {
+  const DebugRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const PatientCardForm();
+  }
+}
+
+@TypedGoRoute<WelcomeRoute>(path: Pages.welcome)
 class WelcomeRoute extends GoRouteData {
   const WelcomeRoute();
 

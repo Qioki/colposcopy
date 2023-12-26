@@ -5,7 +5,7 @@ part 'app_settings.g.dart';
 
 // @JsonSerializable(includeIfNull: false)
 // @freezed
-@Freezed(equal: false)
+@Freezed(equal: false, toStringOverride: false)
 class AppSettings with _$AppSettings {
   // @JsonKey(defaultValue: '')
   // final String? databasePath;

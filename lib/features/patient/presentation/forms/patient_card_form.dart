@@ -1,17 +1,15 @@
 import 'package:colposcopy/core/constants/string.dart';
-import 'package:colposcopy/presentation/widgets/logo_zmir_widget.dart';
+import 'package:colposcopy/features/patient/presentation/cubits/patient_card/patient_card_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import 'package:colposcopy/features/auth/presentation/cubits/auth/auth_cubit.dart';
-
-class SignUpForm extends StatelessWidget {
-  const SignUpForm({super.key});
+class PatientCardForm extends StatelessWidget {
+  const PatientCardForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var cubit = context.read<AuthCubit>();
+    var cubit = context.read<PatientCardCubit>();
     return SingleChildScrollView(
       child: Stack(
         children: [
@@ -22,34 +20,21 @@ class SignUpForm extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const LogoZmirWidget(160),
                 const SizedBox(height: 40),
                 ReactiveForm(
-                  formGroup: cubit.signUpForm,
+                  formGroup: cubit.formGroup,
                   child: SizedBox(
                     child: Wrap(
                       spacing: 40,
                       runSpacing: 10,
-                      children: cubit.formFields
-                          .map((e) => ReactiveTextField<String>(
-                                formControlName: e.formKey,
-                                onSubmitted: (control) => cubit.trySignUp(),
-                                decoration: InputDecoration(
-                                  constraints: const BoxConstraints(
-                                      maxHeight: 65, maxWidth: 200),
-                                  labelText: e.label,
-                                  helperText: '',
-                                  suffixIcon: Icon(e.icon, size: 15),
-                                  helperMaxLines: 1,
-                                ),
-                              ))
-                          .toList(),
+                      children:
+                          cubit.formFields.map((e) => Text('test')).toList(),
                     ),
                   ),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                    onPressed: cubit.trySignUp,
+                    onPressed: () => null,
                     child: const SizedBox(
                       width: 90,
                       height: 30,
@@ -57,14 +42,17 @@ class SignUpForm extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(Strings.commandsCreate),
-                          Icon(Icons.arrow_forward, size: 15),
+                          Icon(
+                            Icons.arrow_forward,
+                            size: 15,
+                          ),
                         ],
                       ),
                     ))
               ],
             ),
           ),
-          AppBar(backgroundColor: Colors.transparent, elevation: 0),
+          // AppBar(backgroundColor: Colors.transparent, elevation: 0),
         ],
       ),
     );

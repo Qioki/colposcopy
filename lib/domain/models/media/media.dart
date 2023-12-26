@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'media.freezed.dart';
 // part 'media.g.dart';
 
-@Freezed()
+@Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Media with _$Media {
   const factory Media({
     required int mediaId,

@@ -37,6 +37,11 @@ class PatientsCubit extends Cubit<PatientsState> {
   Patient? selectedPatient;
   int selectedRowIndex = -1;
 
+  Timer searchDelayTimer = Timer(const Duration(milliseconds: 700), () {});
+
+  Timer doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
+  Patient? lastPressedPatient;
+
   final signUpForm = fb.group({
     SearchFormKeys.search: FormControl<String>(value: ''),
   });
@@ -47,9 +52,91 @@ class PatientsCubit extends Cubit<PatientsState> {
     return true;
   }
 
+  void onRowSelectChanged(Patient patient) {
+    print('onRowSelectChanged ${patient.firstname}');
+    selectedPatient = patient;
+    selectedRowIndex = filteredPatients.indexOf(patient);
+    prepareDataRows();
+
+    if (doubleTabTimer.isActive) {
+      // print('doubleTab');
+    } else {
+      lastPressedPatient = patient;
+      doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
+    }
+  }
+
+  void prepareDataRows() {
+    filteredRows = filteredPatients.map(toDataRow).toList();
+    emit(PatientsState.filtered(filteredRows));
+  }
+
+  DataRow2 toDataRow(Patient patient) {
+    var selected = patient == selectedPatient;
+    var row = DataRow2(
+      cells: getCells(patient, selected),
+      selected: selected,
+      onSelectChanged: (value) {
+        print('value $value $patient');
+        onRowSelectChanged(patient);
+      },
+      // onSecondaryTapDown: (details) {},
+    );
+    return row;
+  }
+
+  List<DataCell> getCells(Patient e, bool selected) {
+    FontWeight? fontWeight = selected ? FontWeight.w600 : null;
+    return [
+      DataCell(Text(
+        '${e.lastname} ${e.firstname} ${e.patronymic ?? ''}',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      DataCell(Text(
+        e.birthdate == null ? '' : _dateOnlyFormatter.format(e.birthdate!),
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      DataCell(Text(
+        e.phone ?? '',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      // DataCell(Text(
+      //   e.email ?? '',
+      //   style: TextStyle(fontWeight: fontWeight),
+      // )),
+      DataCell(Text(
+        e.snils ?? '',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+      DataCell(Text(
+        e.policy ?? '',
+        style: TextStyle(fontWeight: fontWeight),
+      )),
+    ];
+  }
+
+  var patientColumns = const [
+    DataColumn2(size: ColumnSize.L, label: Text(Strings.patientFullnameShort)),
+    DataColumn2(size: ColumnSize.S, label: Text(Strings.patientBirthday)),
+    DataColumn2(size: ColumnSize.S, label: Text(Strings.personPhone)),
+    // DataColumn2(label: Text(Strings.personEmail)),
+    DataColumn2(size: ColumnSize.S, label: Text(Strings.patientSnils)),
+    DataColumn2(size: ColumnSize.S, label: Text(Strings.patientPolicy)),
+  ];
+
+  // Search
   void onSearchTextChanged(String text) async {
+    if (searchDelayTimer.isActive) {
+      searchDelayTimer.cancel();
+    }
+    searchDelayTimer = Timer(const Duration(milliseconds: 400), () {
+      delayedPatientSearch(text);
+    });
+  }
+
+  void delayedPatientSearch(String text) {
     selectedPatient = null;
-    print('onSearchTextChanged ${text}');
+    // print('onSearchTextChanged ${text}');
     searchText = text;
 
     if (searchText == '') {
@@ -65,84 +152,10 @@ class PatientsCubit extends Cubit<PatientsState> {
     prepareDataRows();
   }
 
-  void onRowSelectChanged(Patient patient) {
-    print('onRowSelectChanged ${patient.firstname}');
-    selectedPatient = patient;
-    selectedRowIndex = filteredPatients.indexOf(patient);
-    prepareDataRows();
-  }
-
-  void prepareDataRows() {
-    filteredRows = filteredPatients.map(toDataRow).toList();
-    emit(PatientsState.filtered(filteredRows));
-  }
-
-  Timer doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
-  Patient? lastPressedPatient;
-
-  DataRow2 toDataRow(Patient patient) {
-    var selected = patient == selectedPatient;
-    var row = DataRow2(
-      cells: getCells(patient, selected),
-      selected: selected,
-      onSelectChanged: (value) {
-        print('value $value $patient');
-        onRowSelectChanged(patient);
-        if (doubleTabTimer.isActive) {
-          print('doubleTapEvent ${lastPressedPatient == patient}');
-        } else {
-          lastPressedPatient = patient;
-          doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
-        }
-      },
-      // onSecondaryTapDown: (details) {},
-    );
-    return row;
-  }
-
-  // TODO: selected style
-  List<DataCell> getCells(Patient e, bool selected) {
-    FontWeight? fontWeight = selected ? FontWeight.w600 : null;
-    return [
-      DataCell(Text(
-        '${e.lastname} ${e.firstname} ${e.patronymic ?? ''}',
-        style: TextStyle(fontWeight: fontWeight),
-      )),
-      DataCell(Text(
-        e.birthday == null ? '' : _dateOnlyFormatter.format(e.birthday!),
-        style: TextStyle(fontWeight: fontWeight),
-      )),
-      DataCell(Text(
-        e.phone ?? '',
-        style: TextStyle(fontWeight: fontWeight),
-      )),
-      DataCell(Text(
-        e.email ?? '',
-        style: TextStyle(fontWeight: fontWeight),
-      )),
-      DataCell(Text(
-        e.snils ?? '',
-        style: TextStyle(fontWeight: fontWeight),
-      )),
-      DataCell(Text(
-        e.policy ?? '',
-        style: TextStyle(fontWeight: fontWeight),
-      )),
-    ];
-  }
-
-  var patientColumns = const [
-    DataColumn(label: Text(Strings.patientFullnameShort)),
-    DataColumn(label: Text(Strings.patientBirthday)),
-    DataColumn(label: Text(Strings.personPhone)),
-    DataColumn(label: Text(Strings.personEmail)),
-    DataColumn(label: Text(Strings.patientSnils)),
-    DataColumn(label: Text(Strings.patientPolicy)),
-  ];
-
-  // Search
+  StringBuffer stringBuffer = StringBuffer();
   bool _ifTextContaints(Patient item, String textItem) {
-    var stringBuffer = StringBuffer([
+    stringBuffer.clear();
+    stringBuffer.write([
       item.lastname.toLowerCase(),
       item.firstname.toLowerCase(),
       item.patronymic?.toLowerCase(),

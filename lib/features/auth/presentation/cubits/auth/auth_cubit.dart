@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:colposcopy/core/constants/app_pages.dart';
 import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/di/locator.dart';
 import 'package:colposcopy/domain/controllers/security_controller.dart';
 import 'package:colposcopy/domain/models/user/user.dart';
 import 'package:colposcopy/domain/repositories/users.dart';
@@ -68,10 +70,11 @@ class AuthCubit extends Cubit<AuthState> {
     FromData(AuthFormKeys.password, Strings.userPassword, Icons.lock),
   ];
 
+  // TODO: accent if selected
   User? selection;
   void selectUser(User? selection) => this.selection = selection;
 
-  void tryLogin(BuildContext context) async {
+  void tryLogin() async {
     if (selection == null || selection!.userId == null) return null;
 
     String password = loginForm.control(AuthFormKeys.password).value ?? '';
@@ -79,18 +82,10 @@ class AuthCubit extends Cubit<AuthState> {
       password = SecurityController.hashPassword(password);
     }
 
-    var user = await _repository.getUserWithIdAndPassword(
-        selection!.userId!, password);
-
-    if (user == null) return null;
-
-    onLogin(user);
-
-    // TODO: fix future context
-    const PatientsRoute().go(context);
+    _tryLogin(selection!.userId!, password);
   }
 
-  void trySignUp(BuildContext context) async {
+  void trySignUp() async {
     signUpForm.markAllAsTouched();
 
     if (!signUpForm.valid) return null;
@@ -108,13 +103,18 @@ class AuthCubit extends Cubit<AuthState> {
 
     // TODO: check if user exists
     var userId = await _repository.addUser(User.fromJson(userJson));
-    var user = await _repository.getUserWithIdAndPassword(userId, password);
+
+    _tryLogin(userId, password);
+  }
+
+  void _tryLogin(int userId, String hashedPassword) async {
+    var user =
+        await _repository.getUserWithIdAndPassword(userId, hashedPassword);
     if (user == null) return null;
 
     onLogin(user);
 
-    // TODO: fix future context
-    const PatientsRoute().go(context);
+    locator<AppRouter>().go(Pages.patients);
   }
 
   void onLogin(User user) {

@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'atlas.freezed.dart';
 // part 'atlas.g.dart';
 
-@Freezed()
+@Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Atlas with _$Atlas {
   const factory Atlas({
     required int atlasId,
