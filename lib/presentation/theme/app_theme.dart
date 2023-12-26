@@ -45,6 +45,8 @@ class AppTheme {
     // backgroundColor: AppColor.border,
     primaryColor: AppColors.primary,
     useMaterial3: true,
+    expansionTileTheme:
+        const ExpansionTileThemeData(shape: RoundedRectangleBorder()),
     inputDecorationTheme: const InputDecorationTheme(
       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       border: OutlineInputBorder(

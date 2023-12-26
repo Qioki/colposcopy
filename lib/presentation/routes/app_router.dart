@@ -35,7 +35,7 @@ class AppRouter {
   late GoRouter _router;
   GoRouter initRouter() {
     _router = GoRouter(
-      initialLocation: Pages.welcome,
+      initialLocation: Pages.debug,
       routes: $appRoutes,
       // redirect: (BuildContext context, GoRouterState state) { return null; },
     );

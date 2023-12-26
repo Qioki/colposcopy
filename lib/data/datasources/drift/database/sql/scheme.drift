@@ -31,7 +31,6 @@ CREATE TABLE users (
     user_data 	TEXT NULL,
 	CONSTRAINT FK_users_roles_role_id FOREIGN KEY (role_id) REFERENCES roles (role_id)
 );
---CREATE INDEX IX_users_password ON users (password);
 
 
 CREATE TABLE settings (

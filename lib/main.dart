@@ -5,6 +5,7 @@ import 'dart:io';
 // import 'package:camera_base/camera_base.dart';
 import 'package:colposcopy/core/constants/string.dart';
 import 'package:colposcopy/di/locator.dart';
+import 'package:colposcopy/domain/models/form_item_data/form_item_data.dart';
 import 'package:colposcopy/domain/models/patient/patient.dart';
 import 'package:colposcopy/domain/models/protocol/protocol.dart';
 import 'package:colposcopy/domain/models/visit/visit.dart';
@@ -26,7 +27,7 @@ void main() async {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
-      minimumSize: Size(600, 900),
+      minimumSize: Size(800, 600),
       // size: Size.infinite, //(1400, 800),
       // center: true,
       backgroundColor: Colors.white,
@@ -46,7 +47,10 @@ void main() async {
 
   runApp(const AppRoot());
 
-  // test
+  test();
+}
+
+void test() {
   // var repo = await locator<PatientsRepository>();
   // for (var i = 0; i < 30; i++) {
   //   await repo.addPatient(Patient(

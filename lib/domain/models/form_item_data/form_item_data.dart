@@ -1,3 +1,4 @@
+// ignore_for_file: invalid_annotation_target
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'form_item_data.freezed.dart';
@@ -5,12 +6,21 @@ part 'form_item_data.g.dart';
 
 @Freezed(copyWith: false, equal: false, toStringOverride: false)
 class FormItemData with _$FormItemData {
+  @JsonSerializable(includeIfNull: false)
   const factory FormItemData({
     @Default('') String key,
-    @Default('') String title,
-    @Default([]) List<FormItemData> items,
-    @Default([]) List<String> properties,
     @Default(FormItemType.inputLine) FormItemType itemType,
+    @Default('') String title,
+    List<FormItemData>? items,
+    List<String>? properties,
+    Object? defaultValue,
+    String? hint,
+    List<String>? validators,
+    String? style,
+    int? minWidth,
+    int? maxWidth,
+    int? minHeight,
+    int? maxHeight,
   }) = _FormItemData;
 
   factory FormItemData.fromJson(Map<String, dynamic> json) =>
