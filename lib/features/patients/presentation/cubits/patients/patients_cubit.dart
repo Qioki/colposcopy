@@ -159,6 +159,9 @@ class PatientsCubit extends Cubit<PatientsState> {
       item.lastname.toLowerCase(),
       item.firstname.toLowerCase(),
       item.patronymic?.toLowerCase(),
+      item.birthdate != null
+          ? _dateOnlyFormatter.format(item.birthdate!)
+          : null,
       item.phone?.toLowerCase(),
       item.email?.toLowerCase(),
       item.snils?.toLowerCase(),

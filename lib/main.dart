@@ -5,14 +5,15 @@ import 'dart:io';
 // import 'package:camera_base/camera_base.dart';
 import 'package:colposcopy/core/constants/string.dart';
 import 'package:colposcopy/di/locator.dart';
-import 'package:colposcopy/domain/models/form_item_data/form_item_data.dart';
 import 'package:colposcopy/domain/models/patient/patient.dart';
 import 'package:colposcopy/domain/models/protocol/protocol.dart';
 import 'package:colposcopy/domain/models/visit/visit.dart';
 import 'package:colposcopy/domain/repositories/patients.dart';
+import 'package:colposcopy/domain/repositories/protocols.dart';
 import 'package:colposcopy/domain/repositories/users.dart';
 import 'package:colposcopy/domain/repositories/visits.dart';
 import 'package:colposcopy/features/app/domain/controllers/app_launcher.dart';
+import 'package:colposcopy/features/protocol/data/repository/protocol_impl.dart';
 import 'package:colposcopy/presentation/app.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
@@ -51,14 +52,17 @@ void main() async {
 }
 
 void test() {
+  locator<ProtocolRepository>();
+
   // var repo = await locator<PatientsRepository>();
   // for (var i = 0; i < 30; i++) {
   //   await repo.addPatient(Patient(
   //     userId: -1,
   //     state: 1,
   //     patientId: i,
-  //     firstname: 'other $i',
-  //     lastname: 'other $i',
+  //     firstname: 'asasas $i',
+  //     lastname: 'uiuiu $i',
+  //     patronymic: 'tyty $i',
   //     birthdate: DateTime.now().subtract(const Duration(days: 365 * 5)),
   //     phone: 'some phone',
   //     email: 'some email',

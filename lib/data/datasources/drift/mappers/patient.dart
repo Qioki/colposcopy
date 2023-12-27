@@ -22,7 +22,7 @@ class PatientMapper {
       entities.map(toModel).toList();
 
   static Patient toEntity(model.Patient model) => Patient(
-        patientId: model.patientId,
+        patientId: model.patientId ?? 0,
         userId: model.userId,
         state: model.state,
         firstname: model.firstname,

@@ -6,7 +6,7 @@ part 'role.freezed.dart';
 @Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Role with _$Role {
   const factory Role({
-    required int roleId,
+    int? roleId,
     required String name,
   }) = _Role;
 }

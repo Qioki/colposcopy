@@ -8,10 +8,10 @@ part 'image.freezed.dart';
 @Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Image with _$Image {
   const factory Image({
-    required int imageId,
+    int? imageId,
     required int width,
     required int height,
     required String format,
-    Uint8List? imageData,
+    required Uint8List imageData,
   }) = _Image;
 }

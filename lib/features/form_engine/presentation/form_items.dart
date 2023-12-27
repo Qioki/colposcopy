@@ -1,36 +1,38 @@
-import 'package:colposcopy/domain/models/form_item_data/form_item_data.dart';
+import 'package:colposcopy/features/form_engine/domain/models/form_item_data/form_item_data.dart';
 import 'package:colposcopy/presentation/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class FormItem extends StatelessWidget {
-  FormItem(this.fid, {super.key}) {
-    print('Form item: ${fid.itemType}');
-    switch (fid.itemType) {
-      case FormItemType.inputLine:
-        buildItem = (fid) => FormItemInputLine(fid);
-        break;
-      case FormItemType.inputDate:
-        buildItem = (fid) => FormItemDate(fid);
-        break;
-      default:
-        buildItem = (fid) => FormItemExpander(fid);
-    }
-  }
+  const FormItem(this.fid, {super.key});
+  // {
+  //   print('Form item: ${fid.itemType}');
+  //   switch (fid.itemType) {
+  //     case FormItemType.inputLine:
+  //       buildItem = (fid) => FormItemInputLine(fid);
+  //       break;
+  //     case FormItemType.inputDate:
+  //       buildItem = (fid) => FormItemDate(fid);
+  //       break;
+  //     default:
+  //       buildItem = (fid) => FormItemExpander(fid);
+  //   }
+  // }
 
   final FormItemData fid;
 
   @override
   Widget build(BuildContext context) {
-    return buildItem(fid);
+    // return buildItem(fid);
+    return FormItemExpander(fid);
   }
 
-  late final Widget Function(FormItemData) buildItem;
+  // late final Widget Function(FormItemData) buildItem;
 }
 
-class FormItemInputLine extends StatelessWidget {
-  const FormItemInputLine(this.fid, {super.key});
-  final FormItemData fid;
+class FormItemInputLine extends FormItem {
+  const FormItemInputLine(super.fid, {super.key});
+  // final FormItemData fid;
 
   @override
   Widget build(BuildContext context) {

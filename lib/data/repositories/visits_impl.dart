@@ -2,7 +2,6 @@ import 'package:colposcopy/data/datasources/base/visits.dart';
 import 'package:colposcopy/domain/models/visit/visit.dart';
 import 'package:colposcopy/domain/models/media/media.dart';
 import 'package:colposcopy/domain/models/image/image.dart';
-import 'package:colposcopy/domain/models/protocol/protocol.dart';
 import 'package:colposcopy/domain/repositories/visits.dart';
 import 'package:injectable/injectable.dart';
 
@@ -10,7 +9,7 @@ import 'package:injectable/injectable.dart';
 class VisitsRepositoryImpl extends VisitsRepository {
   VisitsRepositoryImpl({required this.datasource});
 
-  VisitsDatasource datasource;
+  final VisitsDatasource datasource;
 
   // Visit
   @override
@@ -30,11 +29,11 @@ class VisitsRepositoryImpl extends VisitsRepository {
   Future<void> updateVisit(Visit item) => datasource.updateVisit(item);
 
   @override
-  Future<Visit> getVisitById(int id) => datasource.getVisitById(id);
+  Future<Visit?> getVisitById(int id) => datasource.getVisitById(id);
 
   // Media
   @override
-  Future<Media> getMediaById(int id) => datasource.getMediaById(id);
+  Future<Media?> getMediaById(int id) => datasource.getMediaById(id);
 
   @override
   Future<int> addMedia(Media item) => datasource.addMedia(item);
@@ -47,7 +46,7 @@ class VisitsRepositoryImpl extends VisitsRepository {
 
   // Image
   @override
-  Future<Image> getImageById(int id) => datasource.getImageById(id);
+  Future<Image?> getImageById(int id) => datasource.getImageById(id);
 
   @override
   Future<int> addImage(Image item) => datasource.addImage(item);
@@ -57,18 +56,4 @@ class VisitsRepositoryImpl extends VisitsRepository {
 
   @override
   Future<void> updateImage(Image item) => datasource.updateImage(item);
-
-  // Protocol
-  @override
-  Future<Protocol> getProtocolById(int id) => datasource.getProtocolById(id);
-
-  @override
-  Future<int> addProtocol(Protocol item) => datasource.addProtocol(item);
-
-  @override
-  Future<void> deleteProtocolWithId(int id) =>
-      datasource.deleteProtocolWithId(id);
-
-  @override
-  Future<void> updateProtocol(Protocol item) => datasource.updateProtocol(item);
 }

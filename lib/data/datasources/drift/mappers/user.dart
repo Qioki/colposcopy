@@ -47,7 +47,7 @@ class RoleMapper {
       entities.map(toModel).toList();
 
   static Role toEntity(model.Role model) =>
-      Role(roleId: model.roleId, name: model.name);
+      Role(roleId: model.roleId ?? 0, name: model.name);
 }
 
 // Permission
@@ -67,7 +67,7 @@ class PermissionMapper {
       entities.map(toModel).toList();
 
   static Permission toEntity(model.Permission model) => Permission(
-        permissionId: model.permissionId,
+        permissionId: model.permissionId ?? 0,
         roleId: model.roleId,
         objectName: model.objectName,
         createNew: model.createNew,

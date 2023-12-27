@@ -2,6 +2,7 @@ import 'package:colposcopy/data/datasources/drift/database/database.dart';
 import 'package:colposcopy/domain/models/visit/visit.dart' as model;
 import 'package:colposcopy/domain/models/media/media.dart' as model;
 import 'package:colposcopy/domain/models/image/image.dart' as model;
+import 'package:colposcopy/domain/models/protocol/protocol.dart' as model;
 
 // VisitMapper
 class VisitMapper {
@@ -43,7 +44,7 @@ class MediaMapper {
       entities.map(toModel).toList();
 
   static MediaData toEntity(model.Media model) => MediaData(
-        mediaId: model.mediaId,
+        mediaId: model.mediaId ?? 0,
         visitId: model.visitId,
         mediaType: model.mediaType,
         mediaData: model.mediaData,
@@ -60,15 +61,37 @@ class ImageMapper {
         width: entity.width,
         height: entity.height,
         format: entity.format,
+        imageData: entity.imageData,
       );
 
   static List<model.Image> toModelList(List<Image> entities) =>
       entities.map(toModel).toList();
 
   static Image toEntity(model.Image model) => Image(
-        imageId: model.imageId,
+        imageId: model.imageId ?? 0,
         width: model.width,
         height: model.height,
         format: model.format,
+        imageData: model.imageData,
+      );
+}
+
+//ProtocolMapper
+class ProtocolMapper {
+  static model.Protocol toModel(Protocol entity) => model.Protocol(
+        protocolId: entity.protocolId,
+        userId: entity.userId ?? 0,
+        state: entity.state,
+        scheme: entity.scheme,
+      );
+
+  static List<model.Protocol> toModelList(List<Protocol> entities) =>
+      entities.map(toModel).toList();
+
+  static Protocol toEntity(model.Protocol model) => Protocol(
+        protocolId: model.protocolId ?? 0,
+        userId: model.userId,
+        state: model.state,
+        scheme: model.scheme,
       );
 }

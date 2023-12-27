@@ -5,6 +5,7 @@ import 'package:colposcopy/domain/models/visit/visit.dart' as model;
 import 'package:colposcopy/domain/models/media/media.dart' as model;
 import 'package:colposcopy/domain/models/image/image.dart' as model;
 import 'package:colposcopy/domain/models/protocol/protocol.dart' as model;
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: VisitsDatasource)
@@ -29,10 +30,13 @@ class VisitsDatasourceImpl extends VisitsDatasource {
           .go();
 
   @override
-  Future<model.Visit> getVisitById(int id) =>
-      (database.select(database.visits)..where((t) => t.visitId.equals(id)))
-          .getSingle()
-          .then(VisitMapper.toModel);
+  Future<model.Visit?> getVisitById(int id) async {
+    var result = await (database.select(database.visits)
+          ..where((tbl) => tbl.visitId.equals(id)))
+        .get();
+
+    return result.isEmpty ? null : VisitMapper.toModel(result.first);
+  }
 
   @override
   Future<List<model.Visit>> getVisitsWithUserId(int id) =>
@@ -65,10 +69,13 @@ class VisitsDatasourceImpl extends VisitsDatasource {
           .go();
 
   @override
-  Future<model.Media> getMediaById(int id) =>
-      (database.select(database.media)..where((t) => t.mediaId.equals(id)))
-          .getSingle()
-          .then(MediaMapper.toModel);
+  Future<model.Media?> getMediaById(int id) async {
+    var result = await (database.select(database.media)
+          ..where((tbl) => tbl.mediaId.equals(id)))
+        .get();
+
+    return result.isEmpty ? null : MediaMapper.toModel(result.first);
+  }
 
   @override
   Future<List<model.Media>> getMediaWithVisitId(int id) =>
@@ -86,6 +93,7 @@ class VisitsDatasourceImpl extends VisitsDatasource {
             width: item.width,
             height: item.height,
             format: item.format,
+            imageData: item.imageData,
           ));
 
   @override
@@ -94,36 +102,47 @@ class VisitsDatasourceImpl extends VisitsDatasource {
           .go();
 
   @override
-  Future<model.Image> getImageById(int id) =>
-      (database.select(database.images)..where((t) => t.imageId.equals(id)))
-          .getSingle()
-          .then(ImageMapper.toModel);
+  Future<model.Image?> getImageById(int id) async {
+    var result = await (database.select(database.images)
+          ..where((tbl) => tbl.imageId.equals(id)))
+        .get();
+
+    return result.isEmpty ? null : ImageMapper.toModel(result.first);
+  }
+  // =>
+  //     (database.select(database.images)..where((t) => t.imageId.equals(id)))
+  //         .getSingle()
+  //         .then(ImageMapper.toModel);
 
   @override
   Future<void> updateImage(model.Image item) =>
       database.update(database.images).replace(ImageMapper.toEntity(item));
 
   @override
-  Future<int> addProtocol(model.Protocol item) {
-    // TODO: implement addProtocol
-    throw UnimplementedError();
+  Future<int> addProtocol(model.Protocol item) =>
+      database.into(database.protocols).insert(ProtocolsCompanion.insert(
+            userId: Value(item.userId),
+            state: Value(item.state),
+            scheme: item.scheme,
+          ));
+
+  @override
+  Future<model.Protocol?> getProtocolById(int id) async {
+    var result = await (database.select(database.protocols)
+          ..where((tbl) => tbl.protocolId.equals(id)))
+        .get();
+
+    return result.isEmpty ? null : ProtocolMapper.toModel(result.first);
   }
+
+  @override
+  Future<void> updateProtocol(model.Protocol item) => database
+      .update(database.protocols)
+      .replace(ProtocolMapper.toEntity(item));
 
   @override
   Future<void> deleteProtocolWithId(int id) {
     // TODO: implement deleteProtocol
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<model.Protocol> getProtocolById(int id) {
-    // TODO: implement getProtocolById
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateProtocol(model.Protocol item) {
-    // TODO: implement updateProtocol
     throw UnimplementedError();
   }
 }

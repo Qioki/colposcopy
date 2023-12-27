@@ -25,6 +25,30 @@ class FormItemData with _$FormItemData {
 
   factory FormItemData.fromJson(Map<String, dynamic> json) =>
       _$FormItemDataFromJson(json);
+}
+
+enum FormItemType {
+  root, // protocol
+  group, // FormGroup
+  unknown,
+  title, // Text
+  inputLine, // TextField
+  inputNotes, // TextField
+  inputDate, // DateTime
+  radioButton,
+  checkBox,
+  toggleButton,
+  toggleButtonExpander, // CheckBox + Expander
+  comboBox,
+  items, // Column
+  wrap,
+  expander,
+  checkBoxGroup,
+  comboBoxMd,
+  slider,
+}
+
+
 
   // dynamic value = '';
 
@@ -56,22 +80,3 @@ class FormItemData with _$FormItemData {
 
   // @override
   // String toString() => title;
-}
-
-enum FormItemType {
-  unknown,
-  title,
-  inputLine,
-  inputNotes,
-  inputDate,
-  radioButton,
-  checkBox,
-  toggleButton,
-  toggleButtonExpander,
-  comboBox,
-  items,
-  expander,
-  checkBoxGroup,
-  comboBoxMd,
-  slider,
-}

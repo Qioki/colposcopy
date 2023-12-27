@@ -15,7 +15,7 @@ class PatientsRepositoryImpl extends PatientsRepository {
   Stream<List<Patient>> watchPatients() => datasource.watchPatients();
 
   @override
-  Future<Patient> getPatientById(int id) => datasource.getPatientById(id);
+  Future<Patient?> getPatientById(int id) => datasource.getPatientById(id);
 
   @override
   Future<int> addPatient(Patient item) => datasource.addPatient(item);

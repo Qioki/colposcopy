@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+
 class FileHelper {
   FileHelper._();
 
   static Future<Map<String, dynamic>> readJsonFile(String filePath) async {
     try {
       var input = await File(filePath).readAsString();
-      print(input);
+      // print(input);
       return json.decode(input);
     } catch (e) {
       print(e);
@@ -74,5 +76,14 @@ class FileHelper {
       print(e);
     }
     return di.existsSync();
+  }
+
+  static Future<String> loadStringFromAssetsFile(String path) async {
+    try {
+      return rootBundle.loadString(path);
+    } catch (e) {
+      print(e);
+    }
+    return '{}';
   }
 }

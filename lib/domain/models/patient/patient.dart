@@ -6,7 +6,7 @@ part 'patient.freezed.dart';
 @Freezed()
 class Patient with _$Patient {
   const factory Patient({
-    required int patientId,
+    int? patientId,
     required int userId,
     required int state,
     required String firstname,

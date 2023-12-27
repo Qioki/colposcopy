@@ -6,7 +6,7 @@ part 'atlas.freezed.dart';
 @Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Atlas with _$Atlas {
   const factory Atlas({
-    required int atlasId,
+    int? atlasId,
     required int userId,
     required String title,
     required String tree,

@@ -101,6 +101,11 @@ class AuthCubit extends Cubit<AuthState> {
       }
     }
 
+    userJson = {
+      ...userJson,
+      AuthFormKeys.password: password,
+    };
+
     // TODO: check if user exists
     var userId = await _repository.addUser(User.fromJson(userJson));
 

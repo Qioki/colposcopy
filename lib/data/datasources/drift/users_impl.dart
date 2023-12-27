@@ -28,7 +28,7 @@ class UsersDatasourceImpl implements UsersDatasource {
       .into(database.users)
       .insert(UsersCompanion.insert(
         roleId: item.roleId,
-        state: item.state,
+        state: Value(item.state),
         firstname: item.firstname,
         lastname: item.lastname,
         password: Value(item.password),

@@ -4,6 +4,8 @@ import 'package:path/path.dart';
 
 class FileNamesConstants {
   static const String resourcesFolderName = 'Resources';
+  static const String assetsFolderName = 'assets';
+  static const String assetsJsonsFolderName = 'jsons';
   static const String atlasFolderName = 'Atlas';
   static const String cacheFolderName = 'Cache';
   // static const String cacheFolderName = 'Atlas';
@@ -29,6 +31,10 @@ class FilePaths {
   static String get pathToResourcesFolder => FileHelper.checkFolder(
       join(Directory.current.path, FileNamesConstants.resourcesFolderName));
 
+  static String get pathToJsonsFolder => join(
+      FileNamesConstants.assetsFolderName,
+      FileNamesConstants.assetsJsonsFolderName);
+
   static String get pathToAppDataFolder => FileHelper.checkFolder(join(
       Directory.systemTemp.path,
       ConstantsBase.manufacturer,
@@ -46,8 +52,8 @@ class FilePaths {
   static String get pathToSettingsJson => FileHelper.checkJsonFile(
       join(pathToResourcesFolder, FileNamesConstants.settingsJsonName));
 
-  static String get pathToDefaultProtocolJson => FileHelper.checkJsonFile(
-      join(pathToResourcesFolder, FileNamesConstants.protocolFileName));
+  static String get pathToDefaultProtocolJson =>
+      join(pathToJsonsFolder, FileNamesConstants.protocolFileName);
 
   static String get pathToAtlasJson => FileHelper.checkJsonFile(
       join(pathToResourcesFolder, FileNamesConstants.atlasFileName));
@@ -61,6 +67,19 @@ class FilePaths {
   static String get pathToDbFolder {
     return File(pathToDb).parent.absolute.path;
     // return join(Directory.current.path, FileConstants.databaseFolderName);
+  }
+
+  /*
+  
+
+Directory directory = await getApplicationDocumentsDirectory();
+var dbPath = join(directory.path, "app.txt");
+ByteData data = await rootBundle.load("assets/demo.txt");
+List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+await File(dbPath).writeAsBytes(bytes);
+  */
+  static Future<String> loadDefaultProtocol() async {
+    return FileHelper.loadStringFromAssetsFile(pathToDefaultProtocolJson);
   }
 
   static String get pathToDb {

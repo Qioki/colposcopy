@@ -6,7 +6,7 @@ part 'media.freezed.dart';
 @Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Media with _$Media {
   const factory Media({
-    required int mediaId,
+    int? mediaId,
     required int visitId,
     required int mediaType,
     required int imageId,

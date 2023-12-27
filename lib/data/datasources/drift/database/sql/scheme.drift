@@ -20,7 +20,7 @@ CREATE TABLE permissions (
 CREATE TABLE users (
     user_id 	INTEGER NOT NULL CONSTRAINT PK_users PRIMARY KEY AUTOINCREMENT,
     role_id		INTEGER NOT NULL,
-    state 		INTEGER NOT NULL,
+    state 		INTEGER DEFAULT 0 NOT NULL,
     firstname	TEXT NOT NULL,
     lastname 	TEXT NOT NULL,
     patronymic 	TEXT NULL,
@@ -31,6 +31,7 @@ CREATE TABLE users (
     user_data 	TEXT NULL,
 	CONSTRAINT FK_users_roles_role_id FOREIGN KEY (role_id) REFERENCES roles (role_id)
 );
+CREATE INDEX IX_users_password ON users (password);
 
 
 CREATE TABLE settings (
@@ -46,7 +47,7 @@ CREATE INDEX IX_settings_user_id ON settings (user_id);
 CREATE TABLE patients (
     patient_id 	INTEGER NOT NULL CONSTRAINT PK_patients PRIMARY KEY AUTOINCREMENT,
     user_id		INTEGER NOT NULL,
-    state 		INTEGER NOT NULL,
+    state 		INTEGER DEFAULT 0 NOT NULL,
     firstname	TEXT NOT NULL,
     lastname 	TEXT NOT NULL,
     patronymic 	TEXT NULL,
@@ -63,9 +64,11 @@ CREATE INDEX IX_patients_user_id ON patients (user_id);
 
 CREATE TABLE protocols (
 	protocol_id 	INTEGER NOT NULL CONSTRAINT PK_protocols PRIMARY KEY AUTOINCREMENT,
-	state 			INTEGER NOT NULL,
+	user_id 		INTEGER NULL,
+	state 			INTEGER DEFAULT 0 NOT NULL,
 	scheme			TEXT NOT NULL
 );
+CREATE INDEX IX_protocols_user_id ON protocols (user_id);
 
 
 CREATE TABLE visits (
@@ -89,7 +92,7 @@ CREATE TABLE images (
     width 		INTEGER NOT NULL,
     height 		INTEGER NOT NULL,
     format 		TEXT NOT NULL,
-    image_data 	BLOB NULL
+    image_data 	BLOB NOT NULL
 );
 
 

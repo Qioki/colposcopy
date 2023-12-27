@@ -201,22 +201,29 @@ class SearchField extends StatelessWidget {
         controller: _controller,
         onChanged: onChanged,
         // cursorColor: AppColors.primary,
-        decoration: const InputDecoration(
-          constraints: BoxConstraints(maxWidth: 260), // maxHeight: 36
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(25))),
+        decoration: InputDecoration(
+          constraints: const BoxConstraints(maxWidth: 260), // maxHeight: 36
           fillColor: Colors.white,
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: IconButton(
+            onPressed: () {
+              _controller.clear();
+              onChanged('');
+            },
+            icon: const Icon(Icons.clear),
+            hoverColor: Colors.transparent,
+          ),
+          filled: true,
+          isDense: true,
+          hintText: Strings.commandsSearch,
+          hintStyle: const TextStyle(color: Colors.black45, fontSize: 14),
+          // contentPadding: EdgeInsets.all(0),
+          // border: OutlineInputBorder(
+          //     borderRadius: BorderRadius.all(Radius.circular(25))),
           // enabledBorder: OutlineInputBorder(
           //     borderRadius: BorderRadius.all(Radius.circular(25)),
           //     borderSide: BorderSide(color: AppColors.primary, width: 0.35)),
           // hoverColor: AppColors.primaryLight,
-
-          prefixIcon: Icon(Icons.search),
-          filled: true,
-          // contentPadding: EdgeInsets.all(0),
-          isDense: true,
-          hintText: Strings.commandsSearch,
-          hintStyle: TextStyle(color: Colors.black45, fontSize: 14),
         ));
   }
 }

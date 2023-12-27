@@ -6,7 +6,7 @@ part 'permission.freezed.dart';
 @Freezed(copyWith: false, equal: false, toStringOverride: false)
 class Permission with _$Permission {
   const factory Permission({
-    required int permissionId,
+    int? permissionId,
     required int roleId,
     required String objectName,
     required int createNew,
