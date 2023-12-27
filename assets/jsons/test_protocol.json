@@ -1,0 +1,37 @@
+{
+    "Key": "basic",
+    "Title": "Основное",
+    "Properties": [
+        "expander"
+    ],
+    "Items": [
+        {
+            "Key": "complaints",
+            "Title": "Жалобы",
+            "Properties": [
+                "inputs"
+            ]
+        },
+        {
+            "Key": "clinical_diagnosis",
+            "Title": "Клинический диагноз",
+            "Properties": [
+                "inputs"
+            ]
+        },
+        {
+            "Key": "recommendation",
+            "Title": "Рекомендации",
+            "Properties": [
+                "inputs"
+            ]
+        },
+        {
+            "Key": "comment",
+            "Title": "Комментарий",
+            "Properties": [
+                "inputs"
+            ]
+        }
+    ]
+}

@@ -4,12 +4,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'form_item_data.freezed.dart';
 part 'form_item_data.g.dart';
 
-@Freezed(copyWith: false, equal: false, toStringOverride: false)
+@Freezed(equal: false, toStringOverride: false)
+// @Freezed(copyWith: false, equal: false, toStringOverride: false)
 class FormItemData with _$FormItemData {
   @JsonSerializable(includeIfNull: false)
   const factory FormItemData({
     @Default('') String key,
-    @Default(FormItemType.inputLine) FormItemType itemType,
+    @Default(FormItemType.unknown) FormItemType itemType,
     @Default('') String title,
     List<FormItemData>? items,
     List<String>? properties,
@@ -28,55 +29,73 @@ class FormItemData with _$FormItemData {
 }
 
 enum FormItemType {
-  root, // protocol
-  group, // FormGroup
   unknown,
-  title, // Text
-  inputLine, // TextField
-  inputNotes, // TextField
-  inputDate, // DateTime
-  radioButton,
-  checkBox,
-  toggleButton,
-  toggleButtonExpander, // CheckBox + Expander
-  comboBox,
-  items, // Column
-  wrap,
-  expander,
-  checkBoxGroup,
-  comboBoxMd,
-  slider,
+
+  //containers
+  tabs,
+  expander, // vertical +weight
+
+  // inputs
+  input, // TextField
+  notes, // TextField
+  date, // DateTime
+  checkbox,
+  radio,
+
+  combobox,
+
+  // imput + container
+  // toggleButtonExpander, // CheckBox + Expander
+  checkboxGroup,
+  radioGroup,
+
+  // runtime
+  group, // FormGroup
+
+  text, // title != null && items == null
+
+  // items, // Column / Wrap  // if items != null
+  column,
+  wrap, // items + horizontal
+
+  // container, // constaints
+
+  // slider,
+  // row,
+  // root,
+  // toggleButton,
+  // comboBoxMd,
+  // radioButton,
+  // verticalExpander,
 }
 
+// dynamic value = '';
 
+// String key;
+// String title;
+// // late BehaviorSubject<Object> subject;
+// FormItemType itemType;
+// List<FormItemData> items;
+// List<String> properties;
 
-  // dynamic value = '';
+// FormItemData({
+//   this.key = '',
+//   this.title = '',
+//   this.items = const [],
+//   this.properties = const [],
+//   this.itemType = FormItemType.inputLine,
+// }) {
+//   // subject = BehaviorSubject<Object>.seeded(initialValue);
+// }
 
-  // String key;
-  // String title;
-  // // late BehaviorSubject<Object> subject;
-  // FormItemType itemType;
-  // List<FormItemData> items;
-  // List<String> properties;
+// // Object? get value => subject.value;
+// // set value(Object? newValue) {
+// //   if (itemType == FormItemType.CheckBox && newValue == null) {
+// //     subject.add(false);
+// //   } else {
+// //     subject.add(newValue);
+// //   }
+// // }
 
-  // FormItemData({
-  //   this.key = '',
-  //   this.title = '',
-  //   this.items = const [],
-  //   this.properties = const [],
-  //   this.itemType = FormItemType.inputLine,
-  // }) {
-  //   // subject = BehaviorSubject<Object>.seeded(initialValue);
-  // }
-
-  // // Object? get value => subject.value;
-  // // set value(Object? newValue) {
-  // //   if (itemType == FormItemType.CheckBox && newValue == null) {
-  // //     subject.add(false);
-  // //   } else {
-  // //     subject.add(newValue);
-  // //   }
-  // // }
-
-  // @override
-  // String toString() => title;
+// @override
+// String toString() => title;

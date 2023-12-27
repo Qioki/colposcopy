@@ -17,8 +17,8 @@ class AppTheme {
       // onSecondary: AppColors.test,
       // onPrimary: AppColors.test,
       // onPrimaryContainer: AppColors.test,
-      // onSurface: AppColors.test,
-      // surface: AppColors.test,
+      // onSurface: Colors.red,
+      // surface: Colors.red,
       // background: AppColors.test,
       // onBackground: AppColors.test,
       onError: AppColors.onErrorAccent,
@@ -30,7 +30,16 @@ class AppTheme {
       // outlineVariant: AppColors.test,
       // shadow: AppColors.test,
       // onInverseSurface: AppColors.test,
+      // onTertiary: AppColors.test,
+      // onTertiaryContainer: AppColors.test,
+      // tertiary: AppColors.test,
+      // tertiaryContainer: AppColors.test,
+      // scrim: AppColors.primary,
+      // inversePrimary: AppColors.test,
+      // inverseSurface: AppColors.test,
     ),
+    disabledColor: Colors.red,
+    primaryTextTheme: Typography.whiteCupertino,
     // brightness: Brightness.light,
     // textButtonTheme: TextButtonThemeData(
     //   style: TextButton.styleFrom(
@@ -48,6 +57,18 @@ class AppTheme {
     expansionTileTheme:
         const ExpansionTileThemeData(shape: RoundedRectangleBorder()),
     inputDecorationTheme: const InputDecorationTheme(
+      labelStyle:
+          TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+      hintStyle:
+          TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+      helperStyle:
+          TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+      prefixStyle:
+          TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+      suffixStyle:
+          TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+      counterStyle:
+          TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(25)),
@@ -81,7 +102,7 @@ class AppTheme {
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ))),
-    textTheme: GoogleFonts.latoTextTheme(),
+    // textTheme: GoogleFonts.latoTextTheme().copyWith(),
     dataTableTheme: DataTableThemeData(
       dataRowMaxHeight: 35,
       dataRowMinHeight: 32,
@@ -96,11 +117,12 @@ class AppTheme {
       dividerThickness: 0,
       headingTextStyle: const TextStyle(color: Colors.white),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-              strokeAlign: BorderSide.strokeAlignOutside,
-              color: AppColors.primary)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(
+            strokeAlign: BorderSide.strokeAlignOutside,
+            color: AppColors.primary),
+      ),
     ),
     // fontFamily: appFont,
   );

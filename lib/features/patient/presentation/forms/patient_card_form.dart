@@ -10,7 +10,8 @@ class PatientCardForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cubit = context.read<PatientCardCubit>();
+    var cubit = context.watch<PatientCardCubit>();
+    print(cubit.scheme.fid.itemType);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -25,14 +26,17 @@ class PatientCardForm extends StatelessWidget {
                   const SizedBox(height: 40),
                   ReactiveForm(
                     formGroup: cubit.formGroup,
-                    child: SizedBox(
-                      child: FormItem(cubit.scheme),
-                      // child: Wrap(
-                      //   spacing: 40,
-                      //   runSpacing: 10,
-                      //   children:
-                      //       cubit.formFields.map((e) => Text('test')).toList(),
-                      // ),
+                    child: FormRoot(
+                      child: SizedBox(
+                        child: cubit.scheme.build(),
+                        // child: FormItem(cubit.scheme),
+                        // child: Wrap(
+                        //   spacing: 40,
+                        //   runSpacing: 10,
+                        //   children:
+                        //       cubit.formFields.map((e) => Text('test')).toList(),
+                        // ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),

@@ -69,3 +69,4 @@ devtools_options.yaml
 *.g.dart
 *.freezed.dart
 lib/di/locator.config.dart
+.vscode/launch.json
