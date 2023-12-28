@@ -81,6 +81,8 @@ class AppTheme {
       //       BorderSide(width: 3, color: Colors.greenAccent), //<-- SEE HERE
       //   // borderRadius: BorderRadius.circular(25),
       // ),
+      filled: true,
+      fillColor: Colors.white,
       focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(25)),
           borderSide: BorderSide(

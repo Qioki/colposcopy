@@ -18,6 +18,7 @@ class FileNamesConstants {
   static const String logsFileName = "logs.txt";
   static const String defaultSettingsFileName = "default_settings.json";
   static const String protocolFileName = "protocol.json";
+  static const String patientCardFileName = "patient_card.json";
   static const String atlasFileName = "atlas.json";
   static const String atlasZipFileName = "atlas.zip";
 }
@@ -54,6 +55,9 @@ class FilePaths {
 
   static String get pathToDefaultProtocolJson =>
       join(pathToJsonsFolder, FileNamesConstants.protocolFileName);
+
+  static String get pathToDefaultPatientCardJson =>
+      join(pathToJsonsFolder, FileNamesConstants.patientCardFileName);
 
   static String get pathToAtlasJson => FileHelper.checkJsonFile(
       join(pathToResourcesFolder, FileNamesConstants.atlasFileName));

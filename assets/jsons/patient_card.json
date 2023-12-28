@@ -1,0 +1,93 @@
+{
+    "key": "pc",
+    "properties": [
+        "tabs"
+    ],
+    "style": "pc",
+    "items": [
+        {
+            "key": "basic_info",
+            "type": "column",
+            "items": [
+                {
+                    "type": "wrap",
+                    "items": [
+                        {
+                            "key": "firstname",
+                            "type": "input"
+                        },
+                        {
+                            "key": "lastname",
+                            "type": "input"
+                        },
+                        {
+                            "key": "patronymic",
+                            "type": "input"
+                        },
+                        {
+                            "key": "birthdate",
+                            "type": "date"
+                        }
+                    ]
+                },
+                {
+                    "type": "wrap",
+                    "items": [
+                        {
+                            "key": "snils",
+                            "type": "input"
+                        },
+                        {
+                            "key": "policy",
+                            "type": "input"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "contacts",
+            "type": "column",
+            "items": [
+                {
+                    "type": "wrap",
+                    "items": [
+                        {
+                            "key": "city",
+                            "type": "input"
+                        },
+                        {
+                            "key": "address",
+                            "type": "input"
+                        },
+                        {
+                            "key": "email",
+                            "type": "input"
+                        },
+                        {
+                            "key": "phone",
+                            "type": "input"
+                        },
+                        {
+                            "key": "phone2",
+                            "type": "input"
+                        }
+                    ]
+                },
+                {
+                    "type": "wrap",
+                    "items": [
+                        {
+                            "key": "work_info",
+                            "type": "input"
+                        },
+                        {
+                            "key": "post",
+                            "type": "input"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

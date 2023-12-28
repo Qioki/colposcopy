@@ -1,36 +1,67 @@
 {
-    "Key": "basic",
-    "Title": "Основное",
-    "Properties": [
-        "expander"
-    ],
-    "Items": [
+    "key": "protocol",
+    "items": [
         {
-            "Key": "complaints",
-            "Title": "Жалобы",
-            "Properties": [
-                "inputs"
-            ]
-        },
-        {
-            "Key": "clinical_diagnosis",
-            "Title": "Клинический диагноз",
-            "Properties": [
-                "inputs"
-            ]
-        },
-        {
-            "Key": "recommendation",
-            "Title": "Рекомендации",
-            "Properties": [
-                "inputs"
-            ]
-        },
-        {
-            "Key": "comment",
-            "Title": "Комментарий",
-            "Properties": [
-                "inputs"
+            "key": "main",
+            "properties": [
+                "tabs"
+            ],
+            "items": [
+                {
+                    "key": "anamnesis",
+                    "title": "Анамнeз пациента",
+                    "items": [
+                        {
+                            "key": "anamn_1",
+                            "title": "Последняя менструация",
+                            "properties": [
+                                "date"
+                            ]
+                        },
+                        {
+                            "key": "anamn_2",
+                            "title": "Беременности",
+                            "properties": [
+                                "expander"
+                            ],
+                            "items": [
+                                {
+                                    "key": "anamn_2_1",
+                                    "title": "Роды",
+                                    "properties": [
+                                        "validator:max:2",
+                                        "smallint"
+                                    ]
+                                },
+                                {
+                                    "key": "anamn_2_2",
+                                    "title": "Аборты",
+                                    "properties": [
+                                        "validator:max:2",
+                                        "smallint"
+                                    ]
+                                },
+                                {
+                                    "key": "anamn_2_3",
+                                    "title": "Выкидыши",
+                                    "properties": [
+                                        "validator:max:2",
+                                        "smallint"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                
+                {
+                    "key": "anamn_3_1",
+                    "title": "Роды",
+                    "properties": [
+                        "validator:max:2",
+                        "smallint"
+                    ]
+                }
             ]
         }
     ]

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:colposcopy/core/constants/string.dart';
 import 'package:colposcopy/domain/repositories/patients.dart';
+import 'package:colposcopy/domain/repositories/protocols.dart';
 import 'package:colposcopy/features/form_engine/domain/form_controller.dart';
 import 'package:colposcopy/features/form_engine/domain/models/form_item_data/form_item_data.dart';
 import 'package:colposcopy/features/form_engine/domain/models/scheme_item/scheme_item.dart';
@@ -17,26 +18,18 @@ part 'patient_card_cubit.freezed.dart';
 
 @injectable
 class PatientCardCubit extends Cubit<PatientCardState> {
-  PatientCardCubit(this._repository) : super(const PatientCardState.initial()) {
+  PatientCardCubit(this._repository, this._protocolRepository)
+      : super(const PatientCardState.initial()) {
     testInit();
-  }
-  void testInit() async {
-    formGroup = formController.formGroup;
-    String jsonString =
-        await rootBundle.loadString('assets/jsons/test_protocol.json');
-    print(jsonString);
-    FormItemData tree = FormItemData.fromJson(jsonDecode(jsonString));
-    print(tree.itemType);
-
-    scheme = formController.fidToSchemeItem(tree);
-    // emit(const PatientCardState.initial());
   }
 
   final PatientsRepository _repository;
+  final ProtocolRepository _protocolRepository;
   final FormController formController = FormController();
-  late SchemeItem scheme = SchemeItemContainer.container();
+  late SchemeItem scheme = SchemeItemContainer.empty();
 
-  late FormGroup formGroup; // = FormController().fidToFormGroup(scheme);
+  FormGroup formGroup =
+      FormGroup({}); // = FormController().fidToFormGroup(scheme);
   // final formGroup = fb.group({
   // PatientCardFormKeys.firstname: FormControl<String>(
   //   value: '',
@@ -52,6 +45,31 @@ class PatientCardCubit extends Cubit<PatientCardState> {
   // PatientCardFormKeys.password: FormControl<String>(value: ''),
   // PatientCardFormKeys.birthdate: DateTime.now(),
   // });
+
+  void testInit() async {
+    formGroup = formController.formGroup;
+
+    Map<String, dynamic> titlesJson =
+        jsonDecode(await rootBundle.loadString('assets/jsons/pc_keys.json'));
+    formController.setTitles(titlesJson);
+
+    // String jsonString =
+    //     await rootBundle.loadString('assets/jsons/test_protocol.json');
+    var json = _protocolRepository.getPatientCardJson();
+    print(json);
+    // print(protocolJson);
+    FormItemData tree = FormItemData.fromJson(json);
+
+    scheme = formController.fidToSchemeItem(tree);
+    emit(const PatientCardState.initial());
+  }
+
+  void expand(String s, bool value) {
+    print('${formController.schemeMap[s]}');
+    if (formController.schemeMap[s] is SchemeItemExpander) {
+      (formController.schemeMap[s] as SchemeItemExpander).value.value = false;
+    }
+  }
 
   void setReadOnly(bool readOnly) {
     emit(const PatientCardState.initial());

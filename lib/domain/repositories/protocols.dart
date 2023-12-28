@@ -5,4 +5,7 @@ abstract class ProtocolRepository {
   Future<int> addProtocol(Protocol item);
   Future<void> deleteProtocolWithId(int id);
   Future<void> updateProtocol(Protocol item);
+
+  Map<String, dynamic> getProtocolJson();
+  Map<String, dynamic> getPatientCardJson();
 }

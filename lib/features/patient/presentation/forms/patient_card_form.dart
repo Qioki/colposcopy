@@ -13,58 +13,116 @@ class PatientCardForm extends StatelessWidget {
     var cubit = context.watch<PatientCardCubit>();
     print(cubit.scheme.fid.itemType);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 30),
               width: double.infinity,
-              constraints: const BoxConstraints(maxWidth: 600),
+              // height: double.infinity,
+              constraints: const BoxConstraints(maxHeight: 700),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: 40),
-                  ReactiveForm(
-                    formGroup: cubit.formGroup,
-                    child: FormRoot(
-                      child: SizedBox(
+                  Row(
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            print(cubit.formGroup.value);
+                            cubit.setReadOnly(true);
+                          },
+                          child: const SizedBox(
+                            width: 90,
+                            height: 30,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(Strings.commandsCreate),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  size: 15,
+                                ),
+                              ],
+                            ),
+                          )),
+                      ElevatedButton(
+                        onPressed: () {
+                          // print(cubit.formGroup.value);
+                          cubit.expand('anamn_2', true);
+                        },
+                        child: Text(Strings.commandsCreate),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Flexible(
+                    child: ReactiveForm(
+                      formGroup: cubit.formGroup,
+                      child: FormRoot(
                         child: cubit.scheme.build(),
-                        // child: FormItem(cubit.scheme),
-                        // child: Wrap(
-                        //   spacing: 40,
-                        //   runSpacing: 10,
-                        //   children:
-                        //       cubit.formFields.map((e) => Text('test')).toList(),
-                        // ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                      onPressed: () {
-                        print(cubit.formGroup.value);
-                        cubit.setReadOnly(true);
-                      },
-                      child: const SizedBox(
-                        width: 90,
-                        height: 30,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(Strings.commandsCreate),
-                            Icon(
-                              Icons.arrow_forward,
-                              size: 15,
-                            ),
-                          ],
-                        ),
-                      ))
+                  // const SizedBox(height: 40),
+                  // Flexible(
+                  //   child: DefaultTabController(
+                  //     length: 3,
+                  //     child:
+                  //         // Scaffold(
+                  //         // appBar: AppBar(
+                  //         //   bottom: TabBar(
+                  //         //     tabs: [
+                  //         //       for (var item in items) Tab(text: item.fid.title),
+                  //         //     ],
+                  //         //   ),
+                  //         // ),
+                  //         // ),
+
+                  //         SizedBox(
+                  //       child: Column(
+                  //         // mainAxisSize: MainAxisSize.min,
+                  //         // mainAxisAlignment: MainAxisAlignment.start,
+                  //         children: [
+                  //           const TabBar(
+                  //             tabs: [
+                  //               Tab(text: '1'),
+                  //               Tab(text: '2'),
+                  //               Tab(text: '3'),
+                  //             ],
+                  //           ),
+                  //           Flexible(
+                  //             child: Container(
+                  //               // width: 400,
+                  //               // height: 400,
+                  //               child: TabBarView(
+                  //                 children: [
+                  //                   SingleChildScrollView(
+                  //                     child: Center(
+                  //                       child: Container(
+                  //                         color: Colors.red,
+                  //                         child: Text('Tab 1'),
+                  //                         height: 222222,
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                   Center(child: Text('Tab 2')),
+                  //                   Center(child: Text('Tab 3')),
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
-            // AppBar(backgroundColor: Colors.transparent, elevation: 0),
-          ],
-        ),
+          ),
+          // AppBar(backgroundColor: Colors.transparent, elevation: 0),
+        ],
       ),
     );
   }

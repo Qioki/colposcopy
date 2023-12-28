@@ -1,12 +1,22 @@
 import 'package:colposcopy/features/form_engine/domain/models/form_item_data/form_item_data.dart';
 import 'package:colposcopy/features/form_engine/domain/models/scheme_item/scheme_item.dart';
-import 'package:colposcopy/features/form_engine/presentation/form_items.dart';
-import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class FormController {
   FormGroup formGroup = FormGroup({});
+  Map<String, SchemeItem> schemeMap = {};
+  // SchemeItem scheme = SchemeItemContainer.empty();
+
+  SchemeItem initItem(SchemeItem item) {
+    schemeMap[item.fid.key] = item;
+    return item;
+  }
+
   SchemeItem fidToSchemeItem(FormItemData fid) {
+    if (fid.title.isEmpty && fid.key.isNotEmpty && titles[fid.key] != null) {
+      fid.title = titles[fid.key]!;
+    }
+
     try {
       checkProperties(fid);
     } catch (e) {
@@ -22,19 +32,42 @@ class FormController {
       //   }
       //   return SchemeItemInput(fid: fid, formGroup: formGroup);
 
-      case FormItemType.date:
-        formGroup.addAll({fid.key: FormControl<DateTime>()});
-        return SchemeItemDate(fid: fid, formGroup: formGroup);
+      case FormItemType.text:
+        formGroup.addAll({fid.key: FormControl<String>()});
+        return initItem(SchemeItemInput(fid: fid, formGroup: formGroup));
 
       case FormItemType.input:
         formGroup.addAll({fid.key: FormControl<String>()});
-        return SchemeItemInput(fid: fid, formGroup: formGroup);
+        return initItem(SchemeItemInput(fid: fid, formGroup: formGroup));
 
+      case FormItemType.date:
+        formGroup.addAll({fid.key: FormControl<DateTime>()});
+        return initItem(SchemeItemDate(fid: fid, formGroup: formGroup));
+
+      // Containers
       case FormItemType.expander:
-        return SchemeItemExpander(fid: fid, formGroup: formGroup)
-          ..items = fid.items!.map(fidToSchemeItem).toList();
+        var items = fid.items!.map(fidToSchemeItem).toList();
+        return initItem(
+            SchemeItemExpander(items: items, fid: fid, formGroup: formGroup));
+
+      case FormItemType.column:
+        var items = fid.items!.map(fidToSchemeItem).toList();
+        return initItem(
+            SchemeItemColumn(items: items, fid: fid, formGroup: formGroup));
+
+      case FormItemType.wrap:
+        var items = fid.items!.map(fidToSchemeItem).toList();
+        return initItem(
+            SchemeItemWrap(items: items, fid: fid, formGroup: formGroup));
+
+      case FormItemType.tabs:
+        print('tabs: ${fid.itemType}');
+        var items = fid.items!.map(fidToSchemeItem).toList();
+        return initItem(
+            SchemeItemTabs(items: items, fid: fid, formGroup: formGroup));
+
       default:
-        throw UnimplementedError();
+        throw UnimplementedError(fid.itemType.toString());
     }
   }
 
@@ -44,41 +77,50 @@ class FormController {
         var property = element.toLowerCase();
         switch (property) {
           case 'vertical':
-            fid = fid.copyWith(itemType: FormItemType.column);
+            fid.itemType = FormItemType.column;
             break;
           case 'wrap':
-            fid = fid.copyWith(itemType: FormItemType.wrap);
+            fid.itemType = FormItemType.wrap;
+            break;
+          case 'tabs':
+            fid.itemType = FormItemType.tabs;
             break;
           case 'expander':
-            fid = fid.copyWith(itemType: FormItemType.expander);
+            fid.itemType = FormItemType.expander;
+            // fid = fid.copyWith(itemType: FormItemType.expander);
             break;
           case 'input':
-            fid = fid.copyWith(itemType: FormItemType.input);
+            fid.itemType = FormItemType.input;
+            // fid = fid.copyWith(itemType: FormItemType.input);
             break;
           case 'notes':
-            fid = fid.copyWith(itemType: FormItemType.notes);
+            fid.itemType = FormItemType.notes;
+            // fid = fid.copyWith(itemType: FormItemType.notes);
             break;
           case 'date':
-            fid = fid.copyWith(itemType: FormItemType.date);
+            fid.itemType = FormItemType.date;
+            // fid = fid.copyWith(itemType: FormItemType.date);
             break;
           case 'radio':
-            fid = fid.copyWith(itemType: FormItemType.radio);
+            fid.itemType = FormItemType.radio;
+            // fid = fid.copyWith(itemType: FormItemType.radio);
             break;
           case 'checkbox':
-            fid = fid.copyWith(itemType: FormItemType.checkbox);
+            fid.itemType = FormItemType.checkbox;
+            // fid = fid.copyWith(itemType: FormItemType.checkbox);
             break;
           case 'checkboxgroup':
-            fid = fid.copyWith(itemType: FormItemType.checkboxGroup);
+            fid.itemType = FormItemType.checkboxGroup;
+            // fid = fid.copyWith(itemType: FormItemType.checkboxGroup);
             break;
           case 'radiogroup':
-            fid = fid.copyWith(itemType: FormItemType.radioGroup);
+            fid.itemType = FormItemType.radioGroup;
+            // fid = fid.copyWith(itemType: FormItemType.radioGroup);
             break;
         }
 
         if (property.contains('validator')) {
-          if (fid.validators == null) {
-            fid = fid.copyWith(validators: []);
-          }
+          fid.validators ??= [];
           fid.validators!.add(property);
         }
       }
@@ -87,15 +129,22 @@ class FormController {
       var hasItems = fid.items != null && fid.items!.isNotEmpty;
       var hasTitle = fid.title.isNotEmpty;
       if (hasItems) {
-        fid = fid.copyWith(itemType: FormItemType.column);
+        fid.itemType = FormItemType.column;
+
+        // fid = fid.copyWith(itemType: FormItemType.column);
       } else if (hasTitle) {
-        fid = fid.copyWith(itemType: FormItemType.text);
+        fid.itemType = FormItemType.text;
+        // fid = fid.copyWith(itemType: FormItemType.text);
       } else {
-        throw UnimplementedError();
+        throw UnimplementedError(fid.itemType.toString());
       }
     }
+  }
 
-    if (fid.properties == null) {}
+  Map<String, String> titles = {};
+  void setTitles(Map<String, dynamic> titlesJson) {
+    titlesJson.forEach((key, value) => titles[key] = value.toString());
+    print('titles: $titles');
   }
 
   // FormGroup fidToFormGroup(FormItemData fid) {

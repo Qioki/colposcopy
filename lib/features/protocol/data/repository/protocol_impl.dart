@@ -5,7 +5,6 @@ import 'package:colposcopy/core/utils/file_paths.dart';
 import 'package:colposcopy/data/datasources/base/visits.dart';
 import 'package:colposcopy/domain/models/protocol/protocol.dart';
 import 'package:colposcopy/domain/repositories/protocols.dart';
-import 'package:colposcopy/features/form_engine/domain/models/form_item_data/form_item_data.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
@@ -15,48 +14,51 @@ class ProtocolRepositoryImpl extends ProtocolRepository {
   final VisitsDatasource _datasource;
   final Logger _logger;
 
-  FormItemData protocolScheme = const FormItemData();
+  Map<String, dynamic> protocolJson = {};
+  Map<String, dynamic> patientCardJson = {};
 
   final int defaultProtocolId = 1;
 
-  @postConstruct
-  void init() {
-    initProtocolScheme(defaultProtocolId);
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
+    //TODO: async
+    await initProtocolScheme(defaultProtocolId);
+    await initPatientCardScheme();
   }
 
-  void initProtocolScheme(int id) async {
+  Future<void> initProtocolScheme(int id) async {
     try {
       var protocol = await _datasource.getProtocolById(id);
 
       Map<String, dynamic> json = {};
 
       if (protocol == null) {
-        json = await loadProtocolFromAsset();
+        protocolJson =
+            await FileHelper.readJsonFile(FilePaths.pathToDefaultProtocolJson);
         await _datasource
             .addProtocol(Protocol(state: 1, scheme: jsonEncode(json)));
       } else {
-        json = jsonDecode(protocol.scheme);
+        protocolJson = jsonDecode(protocol.scheme);
       }
-      protocolScheme = FormItemData.fromJson(json);
     } catch (e) {
       _logger.e(e);
-
-      protocolScheme = const FormItemData();
     }
   }
 
-  Future<Map<String, dynamic>> loadProtocolFromAsset() async {
+  Future<void> initPatientCardScheme() async {
     try {
-      var json =
-          await FileHelper.readJsonFile(FilePaths.pathToDefaultProtocolJson);
-
-      // print(json);
-      return json;
+      patientCardJson =
+          await FileHelper.readJsonFile(FilePaths.pathToDefaultPatientCardJson);
     } catch (e) {
       _logger.e(e);
+      patientCardJson = {};
     }
-    return {};
   }
+
+  @override
+  Map<String, dynamic> getProtocolJson() => protocolJson;
+  @override
+  Map<String, dynamic> getPatientCardJson() => patientCardJson;
 
   @override
   Future<Protocol?> getProtocolById(int id) => _datasource.getProtocolById(id);
