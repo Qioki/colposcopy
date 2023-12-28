@@ -35,7 +35,7 @@ class AppRouter {
   late GoRouter _router;
   GoRouter initRouter() {
     _router = GoRouter(
-      initialLocation: Pages.debug,
+      initialLocation: Pages.patients,
       routes: $appRoutes,
       // redirect: (BuildContext context, GoRouterState state) { return null; },
     );
@@ -48,6 +48,8 @@ class AppRouter {
         showDialog(
           context: context,
           builder: (BuildContext context) => const AlertDialog(
+            // insetPadding: EdgeInsets.all(0),
+            contentPadding: EdgeInsets.all(0),
             content: PatientCardForm(),
             backgroundColor: Colors.white,
           ),
@@ -57,6 +59,7 @@ class AppRouter {
         showDialog(
           context: context,
           builder: (BuildContext context) => const AlertDialog(
+            contentPadding: EdgeInsets.all(0),
             content: SignUpForm(),
             backgroundColor: Colors.white,
           ),

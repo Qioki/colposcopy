@@ -6,6 +6,7 @@ import 'package:colposcopy/domain/models/protocol/protocol.dart' as model;
 abstract class VisitsDatasource {
   // Visit
   Future<List<model.Visit>> getVisitsWithUserId(int id);
+  Future<List<model.Visit>> getVisitsWithPatientId(int id);
   Stream<List<model.Visit>> watchVisits();
   Future<int> addVisit(model.Visit item);
   Future<void> deleteVisitWithId(int id);

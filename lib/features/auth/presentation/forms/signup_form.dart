@@ -16,6 +16,10 @@ class SignUpForm extends StatelessWidget {
       child: Stack(
         children: [
           Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: Colors.white,
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
             width: double.infinity,
             constraints: const BoxConstraints(maxWidth: 600),

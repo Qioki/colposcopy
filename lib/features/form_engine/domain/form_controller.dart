@@ -1,5 +1,6 @@
 import 'package:colposcopy/features/form_engine/domain/models/form_item_data/form_item_data.dart';
 import 'package:colposcopy/features/form_engine/domain/models/scheme_item/scheme_item.dart';
+import 'package:colposcopy/presentation/validators/required_validator.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class FormController {
@@ -34,14 +35,27 @@ class FormController {
 
       case FormItemType.text:
         formGroup.addAll({fid.key: FormControl<String>()});
-        return initItem(SchemeItemInput(fid: fid, formGroup: formGroup));
+        return initItem(SchemeItemText(fid: fid, formGroup: formGroup));
 
       case FormItemType.input:
-        formGroup.addAll({fid.key: FormControl<String>()});
+        var validators = checkValidators(fid);
+        formGroup.addAll({
+          fid.key: FormControl<String>(
+              validators: validators.isEmpty
+                  ? [const MaxLengthAppValidator(15)]
+                  : validators)
+        });
+
         return initItem(SchemeItemInput(fid: fid, formGroup: formGroup));
 
+      case FormItemType.notes:
+        formGroup.addAll(
+            {fid.key: FormControl<String>(validators: checkValidators(fid))});
+        return initItem(SchemeItemNotes(fid: fid, formGroup: formGroup));
+
       case FormItemType.date:
-        formGroup.addAll({fid.key: FormControl<DateTime>()});
+        formGroup.addAll(
+            {fid.key: FormControl<DateTime>(validators: checkValidators(fid))});
         return initItem(SchemeItemDate(fid: fid, formGroup: formGroup));
 
       // Containers
@@ -121,7 +135,8 @@ class FormController {
 
         if (property.contains('validator')) {
           fid.validators ??= [];
-          fid.validators!.add(property);
+          fid.validators!.add(property.substring('validator'.length));
+          print(fid.validators);
         }
       }
     }
@@ -139,6 +154,27 @@ class FormController {
         throw UnimplementedError(fid.itemType.toString());
       }
     }
+  }
+
+  List<Validator> checkValidators(FormItemData fid) {
+    List<Validator> validators = [];
+    if (fid.validators != null && fid.validators!.isNotEmpty) {
+      for (var element in fid.validators!) {
+        switch (element) {
+          case 'required':
+            validators.add(const RequiredAppValidator());
+            continue;
+        }
+        if (element.startsWith('max') && element.length > 4) {
+          var tryLenght = int.tryParse(element.substring(4));
+          print('tryLenght: $tryLenght');
+          if (tryLenght != null) {
+            validators.add(MaxLengthAppValidator(tryLenght));
+          }
+        }
+      }
+    }
+    return validators;
   }
 
   Map<String, String> titles = {};

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:colposcopy/core/constants/string.dart';
 import 'package:colposcopy/domain/models/patient/patient.dart';
 import 'package:colposcopy/domain/repositories/patients.dart';
+import 'package:colposcopy/domain/repositories/visits.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,9 +17,8 @@ part 'patients_cubit.freezed.dart';
 
 @injectable
 class PatientsCubit extends Cubit<PatientsState> {
-  final DateFormat _dateOnlyFormatter = DateFormat('dd.MM.yyyy');
-
-  PatientsCubit(this._repository) : super(const PatientsState.initial()) {
+  PatientsCubit(this._repository, this._visitRepository)
+      : super(const PatientsState.initial()) {
     _subscription = _repository.watchPatients().listen((event) {
       patients = event;
       print('PatientsCubit ${patients.length}');
@@ -26,25 +26,28 @@ class PatientsCubit extends Cubit<PatientsState> {
     });
   }
   final PatientsRepository _repository;
+  final VisitsRepository _visitRepository;
+
+  final DateFormat _dateOnlyFormatter = DateFormat('dd.MM.yyyy');
 
   StreamSubscription<List<Patient>>? _subscription;
 
   List<Patient> patients = [];
-  List<Patient> filteredPatients = [];
+  List<Patient> filteredItems = [];
   List<DataRow2> filteredRows = [];
 
   String searchText = '';
-  Patient? selectedPatient;
-  int selectedRowIndex = -1;
+  Patient? selectedItem;
+  // int selectedRowIndex = -1;
 
   Timer searchDelayTimer = Timer(const Duration(milliseconds: 700), () {});
 
   Timer doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
-  Patient? lastPressedPatient;
+  Patient? lastPressedItem;
 
-  final signUpForm = fb.group({
-    SearchFormKeys.search: FormControl<String>(value: ''),
-  });
+  // final signUpForm = fb.group({
+  //   SearchFormKeys.search: FormControl<String>(value: ''),
+  // });
 
   void tryOpenPatient() {}
 
@@ -52,27 +55,28 @@ class PatientsCubit extends Cubit<PatientsState> {
     return true;
   }
 
-  void onRowSelectChanged(Patient patient) {
-    print('onRowSelectChanged ${patient.firstname}');
-    selectedPatient = patient;
-    selectedRowIndex = filteredPatients.indexOf(patient);
+  void onRowSelectChanged(Patient item) {
+    print('onRowSelectChanged ${item.firstname}');
+    selectedItem = item;
+    _visitRepository.setActivePatient(item.patientId!);
+    // selectedRowIndex = filteredItems.indexOf(item);
     prepareDataRows();
 
     if (doubleTabTimer.isActive) {
       // print('doubleTab');
     } else {
-      lastPressedPatient = patient;
+      lastPressedItem = item;
       doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
     }
   }
 
   void prepareDataRows() {
-    filteredRows = filteredPatients.map(toDataRow).toList();
+    filteredRows = filteredItems.map(toDataRow).toList();
     emit(PatientsState.filtered(filteredRows));
   }
 
   DataRow2 toDataRow(Patient patient) {
-    var selected = patient == selectedPatient;
+    var selected = patient == selectedItem;
     var row = DataRow2(
       cells: getCells(patient, selected),
       selected: selected,
@@ -115,7 +119,7 @@ class PatientsCubit extends Cubit<PatientsState> {
     ];
   }
 
-  var patientColumns = const [
+  var columns = const [
     DataColumn2(size: ColumnSize.L, label: Text(Strings.patientFullnameShort)),
     DataColumn2(size: ColumnSize.S, label: Text(Strings.patientBirthday)),
     DataColumn2(size: ColumnSize.S, label: Text(Strings.personPhone)),
@@ -135,15 +139,15 @@ class PatientsCubit extends Cubit<PatientsState> {
   }
 
   void delayedPatientSearch(String text) {
-    selectedPatient = null;
+    selectedItem = null;
     // print('onSearchTextChanged ${text}');
     searchText = text;
 
     if (searchText == '') {
-      filteredPatients = [...patients];
+      filteredItems = [...patients];
     } else {
       var textItems = searchText.toLowerCase().split(' ');
-      filteredPatients = patients
+      filteredItems = patients
           .where((Patient item) =>
               textItems.every((textItem) => _ifTextContaints(item, textItem)))
           .toList();

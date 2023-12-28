@@ -41,7 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
     AuthFormKeys.password: FormControl<String>(value: ''),
     AuthFormKeys.error: FormControl<String>(value: ''),
   }, [
-    const RequiredCustomValidator()
+    const RequiredAppValidator()
   ]);
 
   // TODO [Validators.maxLength(10)]
@@ -49,11 +49,11 @@ class AuthCubit extends Cubit<AuthState> {
   final signUpForm = fb.group({
     AuthFormKeys.firstname: FormControl<String>(
       value: '',
-      validators: [const RequiredCustomValidator()],
+      validators: [const RequiredAppValidator()],
     ),
     AuthFormKeys.lastname: FormControl<String>(
       value: '',
-      validators: [const RequiredCustomValidator()],
+      validators: [const RequiredAppValidator()],
     ),
     AuthFormKeys.patronymic: FormControl<String>(value: ''),
     AuthFormKeys.phone: FormControl<String>(value: ''),

@@ -33,10 +33,10 @@ void main() async {
       // center: true,
       backgroundColor: Colors.white,
 
-      skipTaskbar: false,
+      // skipTaskbar: false,
       titleBarStyle: TitleBarStyle.normal,
       title: Strings.appName,
-      windowButtonVisibility: true,
+      // windowButtonVisibility: true,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();

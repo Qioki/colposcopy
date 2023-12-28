@@ -45,6 +45,13 @@ class VisitsDatasourceImpl extends VisitsDatasource {
           .then(VisitMapper.toModelList);
 
   @override
+  Future<List<model.Visit>> getVisitsWithPatientId(int id) =>
+      (database.select(database.visits)
+            ..where((tbl) => tbl.patientId.equals(id)))
+          .get()
+          .then(VisitMapper.toModelList);
+
+  @override
   Future<void> updateVisit(model.Visit item) =>
       database.update(database.visits).replace(VisitMapper.toEntity(item));
 

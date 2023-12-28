@@ -65,10 +65,15 @@ class PatientCardCubit extends Cubit<PatientCardState> {
   }
 
   void expand(String s, bool value) {
-    print('${formController.schemeMap[s]}');
-    if (formController.schemeMap[s] is SchemeItemExpander) {
-      (formController.schemeMap[s] as SchemeItemExpander).value.value = false;
-    }
+    formGroup.markAsDisabled();
+    // print('${formController.schemeMap[s]}');
+    // if (formController.schemeMap[s] is SchemeItemExpander) {
+    //   (formController.schemeMap[s] as SchemeItemExpander).value.value = false;
+    // }
+  }
+
+  void clearForm() {
+    formGroup.reset();
   }
 
   void setReadOnly(bool readOnly) {

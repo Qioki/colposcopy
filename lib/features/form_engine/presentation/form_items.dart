@@ -54,21 +54,33 @@ class FormItemInputLine extends StatelessWidget {
       children: [
         InputLineTitle(si.fid.title),
         ReactiveTextField<String>(
+          maxLines: si is SchemeItemNotes ? 5 : 1,
+          style: const TextStyle(fontSize: 18, color: Colors.black),
           // readOnly: true,
           formControlName: si.fid.key,
           // onSubmitted: (control) {},
           // readOnly: true,
           decoration: InputDecoration(
-              constraints: const BoxConstraints(maxHeight: 36, maxWidth: 300),
-              // contentPadding: const EdgeInsets.symmetric(vertical: 30),
-              // enabledBorder: InputBorder.none,
-              // focusedBorder: InputBorder.none,
-              // prefixText: fid.title,
-              // prefix: Padding(
-              //   padding: const EdgeInsets.only(right: 10),
-              //   child: Text(fid.title),
-              // ),
-              disabledBorder: InputBorder.none),
+            // helperMaxLines: 1,
+            helperText: '',
+            constraints: si is SchemeItemNotes
+                ? const BoxConstraints(minHeight: 265, maxWidth: 630)
+                : null,
+            // constraints: const BoxConstraints(maxHeight: 65, maxWidth: 300),
+            contentPadding: si is SchemeItemNotes
+                ? const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
+                : null,
+            filled: !si.formGroup.disabled,
+
+            // enabledBorder: InputBorder.none,
+            // focusedBorder: InputBorder.none,
+            // prefixText: fid.title,
+            // prefix: Padding(
+            //   padding: const EdgeInsets.only(right: 10),
+            //   child: Text(fid.title),
+            // ),
+            // disabledBorder: InputBorder.none),
+          ),
         ),
       ],
     );
@@ -95,19 +107,24 @@ class FormItemDate extends StatelessWidget {
           },
           formControlName: si.fid.key,
           readOnly: true,
+          style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
-            constraints: const BoxConstraints(maxHeight: 36, maxWidth: 300),
+            helperText: '',
+            filled: !si.formGroup.disabled,
+            // constraints: const BoxConstraints(maxHeight: 36, maxWidth: 300),
             // labelText: 'Birthday',
-            suffixIcon: ReactiveDatePicker<DateTime>(
-              formControlName: si.fid.key,
-              firstDate: DateTime(1900),
-              lastDate: DateTime.now(),
-              builder: (context, picker, child) => IconButton(
-                onPressed: picker.showPicker,
-                icon: const Icon(Icons.date_range),
-              ),
-            ),
-            disabledBorder: InputBorder.none,
+            suffixIcon: si.formGroup.disabled
+                ? null
+                : ReactiveDatePicker<DateTime>(
+                    formControlName: si.fid.key,
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                    builder: (context, picker, child) => IconButton(
+                      onPressed: picker.showPicker,
+                      icon: const Icon(Icons.date_range),
+                    ),
+                  ),
+            // disabledBorder: InputBorder.none,
           ),
         ),
       ],
@@ -191,7 +208,7 @@ class InputLineTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, bottom: 5, top: 15),
+      padding: const EdgeInsets.only(left: 20, bottom: 5, top: 10),
       child: Text(title),
     );
   }

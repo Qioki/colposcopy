@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:colposcopy/data/datasources/base/visits.dart';
 import 'package:colposcopy/domain/models/visit/visit.dart';
 import 'package:colposcopy/domain/models/media/media.dart';
@@ -15,6 +17,17 @@ class VisitsRepositoryImpl extends VisitsRepository {
   @override
   Future<List<Visit>> getVisitsWithUserId(int id) =>
       datasource.getVisitsWithUserId(id);
+
+  @override
+  void setActivePatient(int id) {
+    datasource.getVisitsWithPatientId(id);
+  }
+
+  @override
+  Stream<List<Visit>> get visitsWithActivePatientStream =>
+      _watchVisitsWithActivePatient.stream;
+  final StreamController<List<Visit>> _watchVisitsWithActivePatient =
+      StreamController.broadcast();
 
   @override
   Stream<List<Visit>> watchVisits() => datasource.watchVisits();

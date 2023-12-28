@@ -146,6 +146,8 @@ class Strings {
   static const String patientFullnameShort = 'Ф.И.О. пациента';
   static const String patientMyDoctor = 'Лечащий врач';
   static const String patientNew = 'Новый пациент';
+  static const String patientCreation =
+      'Заполните базовую информацию о пациенте';
   static const String patientSnils = 'СНИЛС';
   static const String patientPolicy = 'Страховой полис';
   static const String patientSelected = 'Посещения';

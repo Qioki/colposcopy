@@ -1,7 +1,7 @@
 {
     "key": "pc",
     "properties": [
-        "tabs"
+        "column"
     ],
     "style": "pc",
     "items": [
@@ -14,11 +14,19 @@
                     "items": [
                         {
                             "key": "firstname",
-                            "type": "input"
+                            "type": "input",
+                            "validators": [
+                                "required",
+                                "max:15"
+                            ]
                         },
                         {
                             "key": "lastname",
-                            "type": "input"
+                            "type": "input",
+                            "validators": [
+                                "required",
+                                "max:15"
+                            ]
                         },
                         {
                             "key": "patronymic",
@@ -86,6 +94,10 @@
                             "type": "input"
                         }
                     ]
+                },
+                {
+                    "key": "additional_info",
+                    "type": "notes"
                 }
             ]
         }

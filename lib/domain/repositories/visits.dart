@@ -11,6 +11,8 @@ abstract class VisitsRepository {
   Future<void> deleteVisitWithId(int id);
   Future<void> updateVisit(Visit item);
   Future<Visit?> getVisitById(int id);
+  Stream<List<Visit>> get visitsWithActivePatientStream;
+  void setActivePatient(int id);
 
   // Media
   Future<Media?> getMediaById(int id);

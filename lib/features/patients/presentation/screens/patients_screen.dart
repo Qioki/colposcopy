@@ -1,4 +1,6 @@
+import 'package:colposcopy/core/constants/app_pages.dart';
 import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/features/patients/presentation/cubits/patient_visits/patient_visits_cubit.dart';
 import 'package:colposcopy/features/patients/presentation/cubits/patients/patients_cubit.dart';
 import 'package:colposcopy/presentation/routes/app_router.dart';
 import 'package:colposcopy/presentation/theme/app_theme.dart';
@@ -12,6 +14,7 @@ class PatientsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<PatientsCubit>();
+    var visitCubit = context.read<PatientVisitsCubit>();
     print('after');
     return Scaffold(
       backgroundColor: AppColors.primaryLight,
@@ -88,7 +91,7 @@ class PatientsScreen extends StatelessWidget {
                             // const SizedBox(width: 20),
                             BlocBuilder<PatientsCubit, PatientsState>(
                               builder: (context, state) => ElevatedButton(
-                                onPressed: cubit.selectedPatient == null
+                                onPressed: cubit.selectedItem == null
                                     ? null
                                     : cubit.tryOpenPatient,
                                 child: const Text(Strings.commandsOpen),
@@ -97,6 +100,7 @@ class PatientsScreen extends StatelessWidget {
                             // const SizedBox(width: 20),
                             ElevatedButton(
                               onPressed: () {
+                                AppRouter.goModal(Modals.patientCard, context);
                                 // showDialog(
                                 //   context: context,
                                 //   builder: (BuildContext context) =>
@@ -121,10 +125,40 @@ class PatientsScreen extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    alignment: Alignment.topCenter,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(''),
+                        const SizedBox(height: 10),
+                        // BUTTONS
+                        Wrap(
+                          spacing: 20,
+                          runSpacing: 10,
+                          children: [
+                            BlocBuilder<PatientsCubit, PatientsState>(
+                              builder: (context, state) => ElevatedButton(
+                                onPressed: visitCubit.selectedItem == null
+                                    ? null
+                                    : visitCubit.tryOpenVisit,
+                                child: const Text(Strings.commandsOpen),
+                              ),
+                            ),
+                            BlocBuilder<PatientsCubit, PatientsState>(
+                              builder: (context, state) => ElevatedButton(
+                                onPressed: cubit.selectedItem == null
+                                    ? null
+                                    : () {
+                                        const VisitRoute().go(context);
+                                      },
+                                child: const Text(Strings.commandsNewVisit),
+                              ),
+                            ),
+                            // const SizedBox(width: 20),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        // TABLE
+                        const Expanded(child: VisitsTable()),
                       ],
                     ),
                   ),
@@ -152,6 +186,23 @@ class PatientsTable extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               },
+              filtered: (items) {
+                return DataTable2(
+                  border: const TableBorder(
+                    horizontalInside:
+                        BorderSide(color: AppColors.primary, width: 0.35),
+                    bottom: BorderSide(color: AppColors.primary, width: 0.35),
+                    verticalInside:
+                        BorderSide(color: AppColors.primary, width: 0.1),
+                  ),
+                  dividerThickness: 0,
+                  showCheckboxColumn: false,
+                  // isHorizontalScrollBarVisible: true,
+                  // isVerticalScrollBarVisible: true,
+                  columns: cubit.columns,
+                  rows: items,
+                );
+              },
               // empty: () {
               //   return Center(
               //     child: Column(
@@ -167,6 +218,26 @@ class PatientsTable extends StatelessWidget {
               //     ),
               //   );
               // },
+            ));
+  }
+}
+
+class VisitsTable extends StatelessWidget {
+  const VisitsTable({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var cubit = context.read<PatientVisitsCubit>();
+    return BlocBuilder<PatientVisitsCubit, PatientVisitsState>(
+        builder: (context, state) => state.when(
+              initial: () {
+                return const Center(
+                    // child: Text(
+                    //   'Посещений нет',
+                    //   style: TextStyle(fontSize: 24),
+                    // ), // TODO: edit
+                    );
+              },
               filtered: (items) {
                 return DataTable2(
                   border: const TableBorder(
@@ -180,7 +251,7 @@ class PatientsTable extends StatelessWidget {
                   showCheckboxColumn: false,
                   // isHorizontalScrollBarVisible: true,
                   // isVerticalScrollBarVisible: true,
-                  columns: cubit.patientColumns,
+                  columns: cubit.columns,
                   rows: items,
                 );
               },
@@ -196,7 +267,6 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('SearchField');
     return TextField(
         controller: _controller,
         onChanged: onChanged,

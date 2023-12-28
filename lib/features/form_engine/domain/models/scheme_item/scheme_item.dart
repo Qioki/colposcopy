@@ -108,9 +108,22 @@ class SchemeItemExpander extends SchemeItems<bool> {
 
 // Inputs
 class SchemeItemInput extends SchemeItem<String> {
-  SchemeItemInput({required super.fid, required super.formGroup});
+  SchemeItemInput({
+    required super.fid,
+    required super.formGroup,
+  });
+
   // ValueNotifier<String> get value => _value;
   // final _value = ValueNotifier<String>('');
+  @override
+  Widget build() => FormItemInputLine(this);
+}
+
+class SchemeItemNotes extends SchemeItem<String> {
+  SchemeItemNotes({
+    required super.fid,
+    required super.formGroup,
+  });
   @override
   Widget build() => FormItemInputLine(this);
 }
