@@ -14,7 +14,7 @@ class PatientCardForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = context.watch<PatientCardCubit>();
-    print(cubit.scheme.fid.itemType);
+    // print(cubit.scheme.fid.itemType);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 30),
       width: double.infinity,

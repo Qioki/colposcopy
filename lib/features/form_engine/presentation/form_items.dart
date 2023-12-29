@@ -28,10 +28,13 @@ class FormItemTabs extends StatelessWidget {
           Flexible(
             child: Container(
               padding: const EdgeInsets.all(30),
-              color: AppColors.primaryLight,
+
+              // color: Colors.red,
+              // color: AppColors.primaryLight,
               child: TabBarView(
                 children: [
-                  for (var item in si.items) item.build(),
+                  for (var item in si.items)
+                    SingleChildScrollView(child: item.build()),
                 ],
               ),
             ),
@@ -64,7 +67,7 @@ class FormItemInputLine extends StatelessWidget {
             // helperMaxLines: 1,
             helperText: '',
             constraints: si is SchemeItemNotes
-                ? const BoxConstraints(minHeight: 265, maxWidth: 630)
+                ? const BoxConstraints(minHeight: 150, maxWidth: 630)
                 : null,
             // constraints: const BoxConstraints(maxHeight: 65, maxWidth: 300),
             contentPadding: si is SchemeItemNotes

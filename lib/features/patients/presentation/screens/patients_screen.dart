@@ -148,7 +148,7 @@ class PatientsScreen extends StatelessWidget {
                                 onPressed: cubit.selectedItem == null
                                     ? null
                                     : () {
-                                        const VisitRoute().go(context);
+                                        const VisitRoute().push(context);
                                       },
                                 child: const Text(Strings.commandsNewVisit),
                               ),

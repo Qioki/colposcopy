@@ -6,6 +6,7 @@ import 'package:colposcopy/features/auth/presentation/screens/welcome_screen.dar
 import 'package:colposcopy/features/patient/presentation/forms/patient_card_form.dart';
 import 'package:colposcopy/features/patient/presentation/screens/patient_screen.dart';
 import 'package:colposcopy/features/patients/presentation/screens/patients_screen.dart';
+import 'package:colposcopy/features/protocol/presentation/screens/protocol_screen.dart';
 import 'package:colposcopy/features/visit/presentation/screens/visit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -53,6 +54,12 @@ class AppRouter {
             content: PatientCardForm(),
             backgroundColor: Colors.white,
           ),
+          // builder: (BuildContext context) => const AlertDialog(
+          //   // insetPadding: EdgeInsets.all(0),
+          //   contentPadding: EdgeInsets.all(0),
+          //   content: PatientCardForm(),
+          //   backgroundColor: Colors.white,
+          // ),
         );
         break;
       case Modals.signUp:
@@ -68,6 +75,8 @@ class AppRouter {
       default:
     }
   }
+
+  static Widget getProtocolScreen() => const ProtocolScreen();
 
   void go(String path) => _router.go(path);
 }

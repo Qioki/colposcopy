@@ -1,66 +1,163 @@
 {
-    "key": "protocol",
+    "key": "pc",
+    "properties": [
+        "tabs"
+    ],
+    "style": "pc",
     "items": [
         {
-            "key": "main",
-            "properties": [
-                "tabs"
-            ],
+            "key": "basic_info",
+            "title": "Анамнeз пациента",
+            "type": "column",
             "items": [
                 {
-                    "key": "anamnesis",
-                    "title": "Анамнeз пациента",
+                    "key": "main",
                     "items": [
                         {
-                            "key": "anamn_1",
-                            "title": "Последняя менструация",
-                            "properties": [
-                                "date"
+                            "key": "anamnesis",
+                            "title": "Анамнeз пациента",
+                            "items": [
+                                {
+                                    "key": "anamn_1",
+                                    "title": "Последняя менструация",
+                                    "properties": [
+                                        "date"
+                                    ]
+                                },
+                                {
+                                    "key": "anamn_2",
+                                    "title": "Беременности",
+                                    "properties": [
+                                        "expander"
+                                    ],
+                                    "items": [
+                                        {
+                                            "key": "anamn_2_1",
+                                            "title": "Роды",
+                                            "properties": [
+                                                "validator:max:2",
+                                                "smallint"
+                                            ]
+                                        },
+                                        {
+                                            "key": "anamn_2_2",
+                                            "title": "Аборты",
+                                            "properties": [
+                                                "validator:max:2",
+                                                "smallint"
+                                            ]
+                                        },
+                                        {
+                                            "key": "anamn_2_3",
+                                            "title": "Выкидыши",
+                                            "properties": [
+                                                "validator:max:2",
+                                                "smallint"
+                                            ]
+                                        }
+                                    ]
+                                }
                             ]
                         },
                         {
-                            "key": "anamn_2",
-                            "title": "Беременности",
+                            "key": "anamn_3_1",
+                            "title": "Роды",
                             "properties": [
-                                "expander"
-                            ],
-                            "items": [
-                                {
-                                    "key": "anamn_2_1",
-                                    "title": "Роды",
-                                    "properties": [
-                                        "validator:max:2",
-                                        "smallint"
-                                    ]
-                                },
-                                {
-                                    "key": "anamn_2_2",
-                                    "title": "Аборты",
-                                    "properties": [
-                                        "validator:max:2",
-                                        "smallint"
-                                    ]
-                                },
-                                {
-                                    "key": "anamn_2_3",
-                                    "title": "Выкидыши",
-                                    "properties": [
-                                        "validator:max:2",
-                                        "smallint"
-                                    ]
-                                }
+                                "validator:max:2",
+                                "smallint"
                             ]
                         }
                     ]
                 },
-                
                 {
-                    "key": "anamn_3_1",
-                    "title": "Роды",
-                    "properties": [
-                        "validator:max:2",
-                        "smallint"
+                    "type": "wrap",
+                    "items": [
+                        {
+                            "key": "firstname",
+                            "type": "input",
+                            "validators": [
+                                "required",
+                                "max:15"
+                            ]
+                        },
+                        {
+                            "key": "lastname",
+                            "type": "input",
+                            "validators": [
+                                "required",
+                                "max:15"
+                            ]
+                        },
+                        {
+                            "key": "patronymic",
+                            "type": "input"
+                        },
+                        {
+                            "key": "birthdate",
+                            "type": "date"
+                        }
                     ]
+                },
+                {
+                    "type": "wrap",
+                    "items": [
+                        {
+                            "key": "snils",
+                            "type": "input"
+                        },
+                        {
+                            "key": "policy",
+                            "type": "input"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "contacts",
+            "type": "column",
+            "items": [
+                {
+                    "type": "wrap",
+                    "items": [
+                        {
+                            "key": "city",
+                            "type": "input"
+                        },
+                        {
+                            "key": "address",
+                            "type": "input"
+                        },
+                        {
+                            "key": "email",
+                            "type": "input"
+                        },
+                        {
+                            "key": "phone",
+                            "type": "input"
+                        },
+                        {
+                            "key": "phone2",
+                            "type": "input"
+                        }
+                    ]
+                },
+                {
+                    "type": "wrap",
+                    "items": [
+                        {
+                            "key": "work_info",
+                            "type": "input"
+                        },
+                        {
+                            "key": "post",
+                            "type": "input"
+                        }
+                    ]
+                },
+                {
+                    "key": "additional_info",
+                    "type": "notes"
                 }
             ]
         }

@@ -3,7 +3,6 @@
     "properties": [
         "column"
     ],
-    "style": "pc",
     "items": [
         {
             "key": "basic_info",
@@ -17,7 +16,7 @@
                             "type": "input",
                             "validators": [
                                 "required",
-                                "max:15"
+                                "max:20"
                             ]
                         },
                         {
@@ -25,16 +24,23 @@
                             "type": "input",
                             "validators": [
                                 "required",
-                                "max:15"
+                                "max:20"
                             ]
                         },
                         {
                             "key": "patronymic",
-                            "type": "input"
+                            "type": "input",
+                            "validators": [
+                                "required",
+                                "max:20"
+                            ]
                         },
                         {
                             "key": "birthdate",
-                            "type": "date"
+                            "type": "date",
+                            "validators": [
+                                "required"
+                            ]
                         }
                     ]
                 },
@@ -61,26 +67,22 @@
                     "type": "wrap",
                     "items": [
                         {
-                            "key": "city",
-                            "type": "input"
-                        },
-                        {
-                            "key": "address",
-                            "type": "input"
-                        },
-                        {
-                            "key": "email",
-                            "type": "input"
-                        },
-                        {
                             "key": "phone",
                             "type": "input"
                         },
                         {
                             "key": "phone2",
                             "type": "input"
+                        },
+                        {
+                            "key": "email",
+                            "type": "input"
                         }
                     ]
+                },
+                {
+                    "key": "address",
+                    "type": "notes"
                 },
                 {
                     "type": "wrap",

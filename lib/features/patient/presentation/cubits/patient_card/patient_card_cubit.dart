@@ -7,7 +7,6 @@ import 'package:colposcopy/domain/repositories/protocols.dart';
 import 'package:colposcopy/features/form_engine/domain/form_controller.dart';
 import 'package:colposcopy/features/form_engine/domain/models/form_item_data/form_item_data.dart';
 import 'package:colposcopy/features/form_engine/domain/models/scheme_item/scheme_item.dart';
-import 'package:colposcopy/presentation/validators/required_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -25,11 +24,11 @@ class PatientCardCubit extends Cubit<PatientCardState> {
 
   final PatientsRepository _repository;
   final ProtocolRepository _protocolRepository;
-  final FormController formController = FormController();
+  final FormController formController = FormController()..inputMaxLenght = 30;
   late SchemeItem scheme = SchemeItemContainer.empty();
 
-  FormGroup formGroup =
-      FormGroup({}); // = FormController().fidToFormGroup(scheme);
+  FormGroup formGroup = FormGroup({});
+  // = FormController().fidToFormGroup(scheme);
   // final formGroup = fb.group({
   // PatientCardFormKeys.firstname: FormControl<String>(
   //   value: '',

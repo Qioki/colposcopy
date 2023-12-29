@@ -8,6 +8,8 @@ class FormController {
   Map<String, SchemeItem> schemeMap = {};
   // SchemeItem scheme = SchemeItemContainer.empty();
 
+  int inputMaxLenght = 20;
+
   SchemeItem initItem(SchemeItem item) {
     schemeMap[item.fid.key] = item;
     return item;
@@ -42,7 +44,7 @@ class FormController {
         formGroup.addAll({
           fid.key: FormControl<String>(
               validators: validators.isEmpty
-                  ? [const MaxLengthAppValidator(15)]
+                  ? [MaxLengthAppValidator(inputMaxLenght)]
                   : validators)
         });
 
@@ -135,7 +137,7 @@ class FormController {
 
         if (property.contains('validator')) {
           fid.validators ??= [];
-          fid.validators!.add(property.substring('validator'.length));
+          fid.validators!.add(property.substring('validator'.length + 1));
           print(fid.validators);
         }
       }
