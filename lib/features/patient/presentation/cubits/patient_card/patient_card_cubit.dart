@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/domain/repositories/patients.dart';
 import 'package:colposcopy/domain/repositories/protocols.dart';
 import 'package:colposcopy/features/form_engine/domain/form_controller.dart';

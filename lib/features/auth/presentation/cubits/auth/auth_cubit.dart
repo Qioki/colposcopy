@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:colposcopy/core/constants/app_pages.dart';
-import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/core/constants/app_screens.dart';
+import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/di/locator.dart';
 import 'package:colposcopy/domain/controllers/security_controller.dart';
 import 'package:colposcopy/domain/models/user/user.dart';
@@ -44,7 +44,6 @@ class AuthCubit extends Cubit<AuthState> {
     const RequiredAppValidator()
   ]);
 
-  // TODO [Validators.maxLength(10)]
   // SIGNUP FORM
   final signUpForm = fb.group({
     AuthFormKeys.firstname: FormControl<String>(
@@ -119,7 +118,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     onLogin(user);
 
-    locator<AppRouter>().go(Pages.patients);
+    locator<AppRouter>().go(Screens.patients);
   }
 
   void onLogin(User user) {
@@ -130,6 +129,11 @@ class AuthCubit extends Cubit<AuthState> {
       signUpForm.reset();
       loginForm.reset();
     });
+  }
+
+  //TODO logout
+  bool tryLogout() {
+    return true;
   }
 
   void clearSignUpForm() {

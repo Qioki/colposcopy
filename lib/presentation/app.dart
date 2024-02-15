@@ -5,8 +5,9 @@ import 'package:colposcopy/features/patients/presentation/cubits/patient_visits/
 import 'package:colposcopy/features/patients/presentation/cubits/patients/patients_cubit.dart';
 import 'package:colposcopy/features/protocol/presentation/cubits/cubit/protocol_cubit.dart';
 import 'package:colposcopy/features/visit/presentation/cubits/visit/visit_cubit.dart';
+import 'package:colposcopy/presentation/cubits/visit_main/visit_main_cubit.dart';
 import 'package:colposcopy/presentation/routes/app_router.dart';
-import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/presentation/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,6 +51,9 @@ class AppRoot extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => locator<ProtocolCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => locator<VisitMainCubit>(),
             ),
           ],
           child: child!,

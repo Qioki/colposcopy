@@ -8,7 +8,8 @@ part 'visit_cubit.freezed.dart';
 
 @injectable
 class VisitCubit extends Cubit<VisitState> {
-  VisitCubit(this._repository) : super(VisitState.initial());
+  VisitCubit(this._repository) : super(const VisitState.patientPreview());
+  final VisitsRepository _repository;
 
-  VisitsRepository _repository;
+  void startVisit() {}
 }

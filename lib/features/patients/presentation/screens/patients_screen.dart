@@ -1,9 +1,11 @@
-import 'package:colposcopy/core/constants/app_pages.dart';
-import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/core/constants/app_screens.dart';
+import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/features/patients/presentation/cubits/patient_visits/patient_visits_cubit.dart';
 import 'package:colposcopy/features/patients/presentation/cubits/patients/patients_cubit.dart';
+import 'package:colposcopy/presentation/cubits/visit_main/visit_main_cubit.dart';
 import 'package:colposcopy/presentation/routes/app_router.dart';
 import 'package:colposcopy/presentation/theme/app_theme.dart';
+import 'package:colposcopy/presentation/widgets/main_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -14,59 +16,96 @@ class PatientsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = context.read<PatientsCubit>();
-    var visitCubit = context.read<PatientVisitsCubit>();
+    // var visitCubit = context.read<PatientVisitsCubit>();
+    var visitMainCubit = context.read<VisitMainCubit>();
     print('after');
     return Scaffold(
       backgroundColor: AppColors.primaryLight,
       body: Column(
         children: [
           // APPBAR
-          Container(
-            // color: Colors.black12,
-            alignment: Alignment.centerRight,
-            child: IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+          MainNavBarWidget(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 6, left: 20),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 20,
+                runSpacing: 10,
                 children: [
-                  IconButton(
-                    tooltip: Strings.settings,
-                    // TextButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.settings,
-                      textDirection: TextDirection.rtl,
-                      color: AppColors.primary,
-                      size: 20,
+                  SizedBox(
+                      height: 32,
+                      child: SearchField(cubit.onSearchTextChanged)),
+                  BlocBuilder<PatientsCubit, PatientsState>(
+                    builder: (context, state) => ElevatedButton(
+                      onPressed: cubit.selectedItem == null
+                          ? null
+                          : () {
+                              visitMainCubit.patientMode();
+                              cubit.tryOpenPatient();
+                              const PatientRoute().go(context);
+                            },
+                      child: const Text(Strings.commandsOpen),
                     ),
-                    // label: const Text(Strings.settings),
                   ),
-                  // const SizedBox(width: 20),
-                  const VerticalDivider(
-                      thickness: 0.5,
-                      indent: 9,
-                      endIndent: 9,
-                      width: 30,
-                      color: AppColors.primary),
-                  IconButton(
-                    // TextButton.icon(
+                  ElevatedButton(
                     onPressed: () {
-                      if (cubit.tryLogout()) {
-                        const LoginRoute().go(context);
-                      }
+                      visitMainCubit.patientMode();
+                      const PatientRoute().go(context);
+                      // AppRouter.goModal(Modals.patientCard, context);
                     },
-                    icon: const Icon(
-                      Icons.logout,
-                      color: AppColors.primary,
-                      size: 20,
-                    ),
-                    // label: const Text(Strings.menuLogOut),
-                    tooltip: Strings.menuLogOut,
+                    child: const Text(Strings.patientNew),
                   ),
-                  const SizedBox(width: 15),
                 ],
               ),
             ),
           ),
+          // Container(
+          //   // color: Colors.black12,
+          //   alignment: Alignment.centerRight,
+          //   child: IntrinsicHeight(
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.end,
+          //       children: [
+          //         IconButton(
+          //           tooltip: Strings.settings,
+          //           // TextButton.icon(
+          //           onPressed: () {},
+          //           icon: const Icon(
+          //             Icons.settings,
+          //             textDirection: TextDirection.rtl,
+          //             color: AppColors.primary,
+          //             size: 20,
+          //           ),
+          //           // label: const Text(Strings.settings),
+          //         ),
+          //         // const SizedBox(width: 20),
+          //         const VerticalDivider(
+          //             thickness: 0.5,
+          //             indent: 9,
+          //             endIndent: 9,
+          //             width: 30,
+          //             color: AppColors.primary),
+          //         IconButton(
+          //           // TextButton.icon(
+          //           onPressed: () {
+          //             if (cubit.tryLogout()) {
+          //               const PatientRoute().go(context);
+          //               // const LoginRoute().go(context);
+          //             }
+          //           },
+          //           icon: const Icon(
+          //             Icons.logout,
+          //             color: AppColors.primary,
+          //             size: 20,
+          //           ),
+          //           // label: const Text(Strings.menuLogOut),
+          //           tooltip: Strings.menuLogOut,
+          //         ),
+          //         const SizedBox(width: 15),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           // BODY
           Flexible(
             child: Row(
@@ -79,44 +118,45 @@ class PatientsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 10),
-                        // BUTTONS
-                        Wrap(
-                          spacing: 20,
-                          runSpacing: 10,
-                          children: [
-                            SizedBox(
-                                height: 36,
-                                child: SearchField(cubit.onSearchTextChanged)),
-                            // const SizedBox(width: 20),
-                            BlocBuilder<PatientsCubit, PatientsState>(
-                              builder: (context, state) => ElevatedButton(
-                                onPressed: cubit.selectedItem == null
-                                    ? null
-                                    : cubit.tryOpenPatient,
-                                child: const Text(Strings.commandsOpen),
-                              ),
-                            ),
-                            // const SizedBox(width: 20),
-                            ElevatedButton(
-                              onPressed: () {
-                                AppRouter.goModal(Modals.patientCard, context);
-                                // showDialog(
-                                //   context: context,
-                                //   builder: (BuildContext context) =>
-                                //       const AlertDialog(
-                                //     content: PatientForm(),
-                                //     backgroundColor: Colors.white,
-                                //   ),
-                                // );
-                              },
-                              child: const Text(Strings.patientNew),
-                            ),
-                          ],
-                        ),
+                        // const SizedBox(height: 10),
+                        // // BUTTONS
+                        // Wrap(
+                        //   spacing: 20,
+                        //   runSpacing: 10,
+                        //   children: [
+                        //     // SizedBox(
+                        //     //     height: 36,
+                        //     //     child: SearchField(cubit.onSearchTextChanged)),
+                        //     // const SizedBox(width: 20),
+                        //     BlocBuilder<PatientsCubit, PatientsState>(
+                        //       builder: (context, state) => ElevatedButton(
+                        //         onPressed: cubit.selectedItem == null
+                        //             ? null
+                        //             : cubit.tryOpenPatient,
+                        //         child: const Text(Strings.commandsOpen),
+                        //       ),
+                        //     ),
+                        //     // const SizedBox(width: 20),
+                        //     ElevatedButton(
+                        //       onPressed: () {
+                        //         AppRouter.goModal(Modals.patientCard, context);
+                        //         // showDialog(
+                        //         //   context: context,
+                        //         //   builder: (BuildContext context) =>
+                        //         //       const AlertDialog(
+                        //         //     content: PatientForm(),
+                        //         //     backgroundColor: Colors.white,
+                        //         //   ),
+                        //         // );
+                        //       },
+                        //       child: const Text(Strings.patientNew),
+                        //     ),
+                        //   ],
+                        // ),
                         const SizedBox(height: 16),
                         // TABLE
                         const Expanded(child: PatientsTable()),
+                        const SizedBox(height: 16),
                       ],
                     ),
                   ),
@@ -129,34 +169,34 @@ class PatientsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 10),
-                        // BUTTONS
-                        Wrap(
-                          spacing: 20,
-                          runSpacing: 10,
-                          children: [
-                            BlocBuilder<PatientsCubit, PatientsState>(
-                              builder: (context, state) => ElevatedButton(
-                                onPressed: visitCubit.selectedItem == null
-                                    ? null
-                                    : visitCubit.tryOpenVisit,
-                                child: const Text(Strings.commandsOpen),
-                              ),
-                            ),
-                            BlocBuilder<PatientsCubit, PatientsState>(
-                              builder: (context, state) => ElevatedButton(
-                                onPressed: cubit.selectedItem == null
-                                    ? null
-                                    : () {
-                                        const VisitRoute().push(context);
-                                      },
-                                child: const Text(Strings.commandsNewVisit),
-                              ),
-                            ),
-                            // const SizedBox(width: 20),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
+                        // const SizedBox(height: 10),
+                        // // BUTTONS
+                        // Wrap(
+                        //   spacing: 20,
+                        //   runSpacing: 10,
+                        //   children: [
+                        //     BlocBuilder<PatientsCubit, PatientsState>(
+                        //       builder: (context, state) => ElevatedButton(
+                        //         onPressed: visitCubit.selectedItem == null
+                        //             ? null
+                        //             : visitCubit.tryOpenVisit,
+                        //         child: const Text(Strings.commandsOpen),
+                        //       ),
+                        //     ),
+                        //     BlocBuilder<PatientsCubit, PatientsState>(
+                        //       builder: (context, state) => ElevatedButton(
+                        //         onPressed: cubit.selectedItem == null
+                        //             ? null
+                        //             : () {
+                        //                 // const VisitRoute().push(context);
+                        //               },
+                        //         child: const Text(Strings.commandsNewVisit),
+                        //       ),
+                        //     ),
+                        //     // const SizedBox(width: 20),
+                        //   ],
+                        // ),
+                        // const SizedBox(height: 16),
                         // TABLE
                         const Expanded(child: VisitsTable()),
                       ],
@@ -274,6 +314,7 @@ class SearchField extends StatelessWidget {
         decoration: InputDecoration(
           constraints: const BoxConstraints(maxWidth: 260), // maxHeight: 36
           fillColor: Colors.white,
+          hoverColor: Colors.black12,
           prefixIcon: const Icon(Icons.search),
           suffixIcon: IconButton(
             onPressed: () {

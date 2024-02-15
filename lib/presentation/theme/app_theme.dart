@@ -17,65 +17,24 @@ class AppTheme {
     var baseTheme = ThemeData(brightness: brightness);
 
     return baseTheme.copyWith(
-      // textTheme: GoogleFonts.latoTextTheme(baseTheme.textTheme),
-      // );
-      //  ThemeData(
       // textTheme: GoogleFonts.latoTextTheme(),
       textTheme: GoogleFonts.robotoTextTheme(baseTheme.textTheme).copyWith(
-          // bodyMedium:
-          //     GoogleFonts.roboto(textStyle: baseTheme.textTheme.bodyMedium),
+          // bodyMedium: GoogleFonts.roboto(textStyle: baseTheme.textTheme.bodyMedium),
           ),
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
-        // secondary: AppColors.test,
-        // onSecondary: AppColors.test,
-        // onPrimary: AppColors.test,
-        // onPrimaryContainer: AppColors.test,
-        // onSurface: Colors.red,
-        // surface: Colors.red,
-        // background: AppColors.test,
-        // onBackground: AppColors.test,
         onError: AppColors.onErrorAccent,
-        // error: AppColors.test,
-        // onErrorContainer: AppColors.test,
-        // onSurfaceVariant: AppColors.test,
-        // onSecondaryContainer: AppColors.test,
         outline: AppColors.primary,
-        // outlineVariant: AppColors.test,
-        // shadow: AppColors.test,
-        // onInverseSurface: AppColors.test,
-        // onTertiary: AppColors.test,
-        // onTertiaryContainer: AppColors.test,
-        // tertiary: AppColors.test,
-        // tertiaryContainer: AppColors.test,
-        // scrim: AppColors.primary,
-        // inversePrimary: AppColors.test,
-        // inverseSurface: AppColors.test,
       ),
       disabledColor: Colors.red,
       primaryTextTheme: Typography.whiteCupertino,
-      // primaryTextTheme: Typography.whiteCupertino,
-      // brightness: Brightness.light,
-      // textButtonTheme: TextButtonThemeData(
-      //   style: TextButton.styleFrom(
-      //     // primary: Colors.white,
-      //     padding: const EdgeInsets.all(10),
-      //     fixedSize: const Size(100, 40),
-      //     backgroundColor: Colors.blueGrey,
-      //     textStyle: const TextStyle(fontSize: 16),
-      //   ),
-      // ),
-      // scaffoldBackgroundColor: AppColor.border,
-      // backgroundColor: AppColor.border,
       primaryColor: AppColors.primary,
-      // useMaterial3: true,
       expansionTileTheme:
           const ExpansionTileThemeData(shape: RoundedRectangleBorder()),
       inputDecorationTheme: const InputDecorationTheme(
         helperMaxLines: 1,
         contentPadding: EdgeInsets.symmetric(horizontal: 20),
         constraints: BoxConstraints(maxHeight: 65, maxWidth: 300),
-        // contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
@@ -108,14 +67,13 @@ class AppTheme {
               // shape: const StadiumBorder(),
               elevation: 1,
               padding: const EdgeInsets.symmetric(
-                horizontal: 25,
-                vertical: 15,
+                horizontal: 22,
+                vertical: 14,
               ),
               textStyle: const TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w400,
               ))),
-      // textTheme: GoogleFonts.latoTextTheme().copyWith(),
       dataTableTheme: DataTableThemeData(
         dataRowMaxHeight: 35,
         dataRowMinHeight: 32,
@@ -137,7 +95,15 @@ class AppTheme {
               color: AppColors.primary),
         ),
       ),
-      // fontFamily: appFont,
+      // textButtonTheme: TextButtonThemeData(
+      //   style: TextButton.styleFrom(
+      //     // primary: Colors.white,
+      //     padding: const EdgeInsets.all(10),
+      //     fixedSize: const Size(100, 40),
+      //     backgroundColor: Colors.blueGrey,
+      //     textStyle: const TextStyle(fontSize: 16),
+      //   ),
+      // ),
     );
   }
 }

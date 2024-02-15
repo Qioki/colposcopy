@@ -1,5 +1,5 @@
-import 'package:colposcopy/core/constants/app_pages.dart';
-import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/core/constants/app_screens.dart';
+import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/domain/models/user/user.dart';
 import 'package:colposcopy/features/auth/presentation/cubits/auth/auth_cubit.dart';
 import 'package:colposcopy/presentation/routes/app_router.dart';

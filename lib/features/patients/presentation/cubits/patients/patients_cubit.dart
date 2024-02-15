@@ -1,23 +1,24 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
-import 'package:colposcopy/core/constants/string.dart';
-import 'package:colposcopy/domain/models/patient/patient.dart';
-import 'package:colposcopy/domain/repositories/patients.dart';
-import 'package:colposcopy/domain/repositories/visits.dart';
+import 'package:colposcopy/domain/controllers/visit_controller.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
-import 'package:reactive_forms/reactive_forms.dart';
+import 'package:bloc/bloc.dart';
+
+import 'package:colposcopy/core/constants/strings.dart';
+import 'package:colposcopy/domain/models/patient/patient.dart';
+import 'package:colposcopy/domain/repositories/patients.dart';
+import 'package:colposcopy/domain/repositories/visits.dart';
 
 part 'patients_state.dart';
 part 'patients_cubit.freezed.dart';
 
 @injectable
 class PatientsCubit extends Cubit<PatientsState> {
-  PatientsCubit(this._repository, this._visitRepository)
+  PatientsCubit(this._repository, this._visitsRepository, this._visitController)
       : super(const PatientsState.initial()) {
     _subscription = _repository.watchPatients().listen((event) {
       patients = event;
@@ -26,7 +27,8 @@ class PatientsCubit extends Cubit<PatientsState> {
     });
   }
   final PatientsRepository _repository;
-  final VisitsRepository _visitRepository;
+  final VisitsRepository _visitsRepository;
+  final VisitController _visitController;
 
   final DateFormat _dateOnlyFormatter = DateFormat('dd.MM.yyyy');
 
@@ -49,7 +51,11 @@ class PatientsCubit extends Cubit<PatientsState> {
   //   SearchFormKeys.search: FormControl<String>(value: ''),
   // });
 
-  void tryOpenPatient() {}
+  void tryOpenPatient() {
+    if (selectedItem != null) {
+      _visitController.setActivePatient(selectedItem!);
+    }
+  }
 
   bool tryLogout() {
     return true;
@@ -58,7 +64,7 @@ class PatientsCubit extends Cubit<PatientsState> {
   void onRowSelectChanged(Patient item) {
     print('onRowSelectChanged ${item.firstname}');
     selectedItem = item;
-    _visitRepository.setActivePatient(item.patientId!);
+    _visitsRepository.setActivePatient(item.patientId!);
     // selectedRowIndex = filteredItems.indexOf(item);
     prepareDataRows();
 

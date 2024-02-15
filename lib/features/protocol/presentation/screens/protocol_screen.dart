@@ -1,4 +1,4 @@
-import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/features/form_engine/presentation/form_items.dart';
 import 'package:colposcopy/features/protocol/presentation/cubits/cubit/protocol_cubit.dart';
 import 'package:colposcopy/presentation/theme/app_theme.dart';

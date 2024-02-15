@@ -1,4 +1,4 @@
-import 'package:colposcopy/core/constants/string.dart';
+import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/presentation/widgets/logo_zmir_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

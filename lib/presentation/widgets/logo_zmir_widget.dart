@@ -14,3 +14,18 @@ class LogoZmirWidget extends StatelessWidget {
     );
   }
 }
+
+class LogoMiniZmirWidget extends StatelessWidget {
+  const LogoMiniZmirWidget(this.width, {super.key});
+
+  final double? width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      'assets/images/icon_logo_menu.png',
+      width: width,
+      filterQuality: FilterQuality.high,
+    );
+  }
+}

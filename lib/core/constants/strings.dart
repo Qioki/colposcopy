@@ -121,6 +121,7 @@ class Strings {
   static const String menuExit = 'Выход';
   static const String menuInfo = 'Справка';
   static const String menuLogOut = 'Выход';
+  static const String menuUserLogOut = 'Сменить пользователя';
   static const String menuSaveExit = 'Сохранить и выйти';
   static const String notificationCapsLockIsOn = 'Caps Lock включен';
   static const String notificationCloseVisit = 'Посещение не окончено';
@@ -146,8 +147,7 @@ class Strings {
   static const String patientFullnameShort = 'Ф.И.О. пациента';
   static const String patientMyDoctor = 'Лечащий врач';
   static const String patientNew = 'Новый пациент';
-  static const String patientCreation =
-      'Заполните базовую информацию о пациенте';
+  static const String patientCreation = 'Создание карты пациента';
   static const String patientSnils = 'СНИЛС';
   static const String patientPolicy = 'Страховой полис';
   static const String patientSelected = 'Посещения';
@@ -217,12 +217,3 @@ class Strings {
   static const String visitHistory = 'История посещений';
   static const String visitReport = 'Отчёт';
 }
-
-  // String _randomValue() {
-  //   final rand = Random();
-  //   final codeUnits = List.generate(20, (index) {
-  //     return rand.nextInt(26) + 65;
-  //   });
-
-  //   return String.fromCharCodes(codeUnits);
-  // }
