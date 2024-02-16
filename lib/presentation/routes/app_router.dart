@@ -18,7 +18,7 @@ class AppRouter {
   late GoRouter _router;
   GoRouter initRouter() {
     _router = GoRouter(
-      initialLocation: Screens.patient,
+      initialLocation: Screens.patients,
       routes: $appRoutes,
       redirect: (BuildContext context, GoRouterState state) {
         return null;

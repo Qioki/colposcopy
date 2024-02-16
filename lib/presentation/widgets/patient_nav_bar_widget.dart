@@ -39,12 +39,17 @@ class PatientNavBarWidget extends StatelessWidget {
             TextButton.icon(
               icon: const Icon(Icons.cancel, size: 18),
               // icon: const Icon(Icons.arrow_back, size: 18),
-              onPressed: () => const PatientsRoute().go(context),
+              onPressed: () {
+                patientCardCubit.cancelEdit();
+                // const PatientsRoute().go(context);
+              },
               label: const Text(Strings.commandsCancel),
             ),
             TextButton.icon(
               icon: const Icon(Icons.save, size: 18),
-              onPressed: () {},
+              onPressed: () {
+                patientCardCubit.applyEdit();
+              },
               label: const Text(Strings.commandsSave),
             ),
           ],
@@ -62,7 +67,7 @@ class PatientNavBarWidget extends StatelessWidget {
                     ),
                     // const SizedBox(width: 15),
                     // const Text('Новый пациент', style: TextStyle(fontSize: 18)),
-                    const Spacer(),
+                    // const Spacer(),
                     const SizedBox(width: 25),
                     const VerticalDivider(
                         thickness: 0.5,
@@ -72,7 +77,9 @@ class PatientNavBarWidget extends StatelessWidget {
                         color: Colors.black54),
                     TextButton.icon(
                       icon: const Icon(Icons.edit, size: 18),
-                      onPressed: () {},
+                      onPressed: () {
+                        patientCardCubit.editPatient();
+                      },
                       label: const Text(Strings.commandsEdit),
                     ),
                     TextButton.icon(

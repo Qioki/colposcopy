@@ -1,16 +1,13 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:colposcopy/core/constants/app_screens.dart';
-import 'package:colposcopy/di/locator.dart';
-import 'package:colposcopy/domain/controllers/visit_controller.dart';
-import 'package:colposcopy/domain/models/patient/patient.dart';
-import 'package:colposcopy/presentation/routes/app_router.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import 'package:colposcopy/domain/controllers/visit_controller.dart';
+import 'package:colposcopy/domain/models/patient/patient.dart';
 import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/domain/repositories/patients.dart';
 import 'package:colposcopy/domain/repositories/protocols.dart';
@@ -37,6 +34,7 @@ class PatientCardCubit extends Cubit<PatientCardState> {
   late SchemeItem scheme = SchemeItemContainer.empty();
 
   FormGroup formGroup = FormGroup({});
+  Map<String, Object?> _tempFormValues = {};
   // = FormController().fidToFormGroup(scheme);
   // final formGroup = fb.group({
   // PatientCardFormKeys.firstname: FormControl<String>(
@@ -93,8 +91,9 @@ class PatientCardCubit extends Cubit<PatientCardState> {
       ...formJson,
       'userId': 1, // TODO get from AppSession
       'birthdate': DateFormat('yyyy-MM-dd').format(bitrhdate),
-      'card': formJson.toString(),
     };
+
+    json['card'] = jsonEncode(json);
 
     var id = await _patientsRepository.addPatient(Patient.fromJson(json));
     viewPatient(id);
@@ -110,15 +109,15 @@ class PatientCardCubit extends Cubit<PatientCardState> {
     // formGroup.markAsDisabled();
     setReadOnly(true);
     var patientJson = patient.toJson();
-    print('viewPatient ${patientJson}');
 
-    var json = {
-      ...patientJson,
-      'birthdate': DateTime.parse(patientJson['birthdate']),
-    };
-
-    formGroup.updateValue(json);
-
+    if (patient.card != null) {
+      var cardJson = jsonDecode(patient.card!) as Map<String, dynamic>;
+      var json = {
+        ...cardJson,
+        'birthdate': DateTime.parse(patientJson['birthdate']),
+      };
+      formGroup.updateValue(json);
+    }
     _visitController.setActivePatient(patient);
 
     emit(const PatientCardState.viewPatient());
@@ -127,6 +126,15 @@ class PatientCardCubit extends Cubit<PatientCardState> {
   Future<bool> trySave() async {
     return true;
   }
+
+  void editPatient() {
+    _tempFormValues = formGroup.value;
+    setReadOnly(true);
+  }
+
+  void applyEdit() {}
+
+  void cancelEdit() {}
 
   void expand(String s, bool value) {
     // formGroup.markAsDisabled();
@@ -145,19 +153,6 @@ class PatientCardCubit extends Cubit<PatientCardState> {
     formGroup.markAsDisabled(updateParent: true, emitEvent: true);
   }
 
-  // FormControl<T> didToFormControl2<T>(FormItemData fid, T value) {
-  //   switch (fid.itemType) {
-  //     case FormItemType.inputLine:
-  //       return FormControl<T>(
-  //         value: value,
-  //         disabled: true,
-  //       );
-  //     default:
-  //   }
-  //   return FormControl<T>(
-  //       value: value, validators: [RequiredCustomValidator()]);
-  // }
-
   final List<FromData> formFields = [
     FromData(PatientCardFormKeys.firstname, Strings.personName),
     FromData(PatientCardFormKeys.lastname, Strings.personLastname),
@@ -165,47 +160,6 @@ class PatientCardCubit extends Cubit<PatientCardState> {
     FromData(PatientCardFormKeys.phone, Strings.personPhone),
     FromData(PatientCardFormKeys.email, Strings.personEmail),
   ];
-
-  // TODO: readonly
-  // late FormItemData tree = FormItemData.fromJson(jsonDecode(jsonString));
-
-  // String jsonString = '{}';
-//   late FormItemData tree = FormItemData(
-//     key: 'key 2',
-//     itemType: FormItemType.expander,
-//     title: 'expansion',
-//     items: [
-//       const FormItemData(
-//         key: 'key 1',
-//         itemType: FormItemType.input,
-//         title: 'Firstname',
-//         // items: [],
-//         properties: ['vertical'],
-//         defaultValue: 'Mari',
-//         hint: 'type firstname',
-//         validators: ['required'],
-//         minWidth: 100,
-//         maxWidth: 100,
-//         // minHeight: 0,
-//         // maxHeight: 0,
-//       ),
-//       FormItemData(
-//         key: 'key 3',
-//         itemType: FormItemType.date,
-//         title: 'Birthdate',
-//         // items: [],
-//         properties: ['vertical'],
-//         defaultValue: DateTime.now(),
-//         hint: 'type firstname',
-//         validators: ['required'],
-//         minWidth: 100,
-//         maxWidth: 100,
-//         // minHeight: 0,
-//         // maxHeight: 0,
-//       )
-//     ],
-//     // properties: ['vertical'],
-//   );
 }
 
 class PatientCardFormKeys {

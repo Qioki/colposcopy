@@ -41,9 +41,12 @@ class PatientsScreen extends StatelessWidget {
                       onPressed: cubit.selectedItem == null
                           ? null
                           : () {
-                              visitMainCubit.patientMode();
-                              cubit.tryOpenPatient();
-                              const PatientRoute().go(context);
+                              if (cubit.selectedItem != null) {
+                                patientCardCubit.viewPatient(
+                                    cubit.selectedItem!.patientId!);
+                                visitMainCubit.patientMode();
+                                const PatientRoute().go(context);
+                              }
                             },
                       child: const Text(Strings.commandsOpen),
                     ),

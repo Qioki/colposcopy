@@ -13,6 +13,7 @@ class PatientScreen extends StatelessWidget {
     var cubit = context.watch<PatientCardCubit>();
     return SingleChildScrollView(
       child: Container(
+        padding: const EdgeInsets.all(30),
         color: AppColors.primaryLight,
         child: Center(
           child: ReactiveForm(

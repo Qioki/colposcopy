@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:colposcopy/domain/controllers/visit_controller.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,7 +21,6 @@ class PatientsCubit extends Cubit<PatientsState> {
       : super(const PatientsState.initial()) {
     _subscription = _repository.watchPatients().listen((event) {
       patients = event;
-      print('PatientsCubit ${patients.length}');
       onSearchTextChanged(searchText);
     });
   }
@@ -40,39 +38,23 @@ class PatientsCubit extends Cubit<PatientsState> {
 
   String searchText = '';
   Patient? selectedItem;
-  // int selectedRowIndex = -1;
 
   Timer searchDelayTimer = Timer(const Duration(milliseconds: 700), () {});
 
-  Timer doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
+  Timer doubleTapTimer = Timer(const Duration(milliseconds: 300), () {});
   Patient? lastPressedItem;
-
-  // final signUpForm = fb.group({
-  //   SearchFormKeys.search: FormControl<String>(value: ''),
-  // });
-
-  void tryOpenPatient() {
-    if (selectedItem != null) {
-      _visitController.setActivePatient(selectedItem!);
-    }
-  }
-
-  bool tryLogout() {
-    return true;
-  }
 
   void onRowSelectChanged(Patient item) {
     print('onRowSelectChanged ${item.firstname}');
     selectedItem = item;
     _visitsRepository.setActivePatient(item.patientId!);
-    // selectedRowIndex = filteredItems.indexOf(item);
     prepareDataRows();
 
-    if (doubleTabTimer.isActive) {
-      // print('doubleTab');
+    if (doubleTapTimer.isActive) {
+      // print('doubleTap'); // TODO add double tap
     } else {
       lastPressedItem = item;
-      doubleTabTimer = Timer(const Duration(milliseconds: 300), () {});
+      doubleTapTimer = Timer(const Duration(milliseconds: 300), () {});
     }
   }
 
@@ -90,7 +72,6 @@ class PatientsCubit extends Cubit<PatientsState> {
         print('value $value $patient');
         onRowSelectChanged(patient);
       },
-      // onSecondaryTapDown: (details) {},
     );
     return row;
   }
@@ -111,10 +92,6 @@ class PatientsCubit extends Cubit<PatientsState> {
         e.phone ?? '',
         style: TextStyle(fontWeight: fontWeight),
       )),
-      // DataCell(Text(
-      //   e.email ?? '',
-      //   style: TextStyle(fontWeight: fontWeight),
-      // )),
       DataCell(Text(
         e.snils ?? '',
         style: TextStyle(fontWeight: fontWeight),
@@ -132,7 +109,6 @@ class PatientsCubit extends Cubit<PatientsState> {
     DataColumn2(size: ColumnSize.L, label: Text(Strings.patientFullnameShort)),
     DataColumn2(size: ColumnSize.S, label: Text(Strings.patientBirthday)),
     DataColumn2(size: ColumnSize.S, label: Text(Strings.personPhone)),
-    // DataColumn2(label: Text(Strings.personEmail)),
     DataColumn2(size: ColumnSize.S, label: Text(Strings.patientSnils)),
     DataColumn2(size: ColumnSize.S, label: Text(Strings.patientPolicy)),
   ];
@@ -149,7 +125,6 @@ class PatientsCubit extends Cubit<PatientsState> {
 
   void delayedPatientSearch(String text) {
     selectedItem = null;
-    // print('onSearchTextChanged ${text}');
     searchText = text;
 
     if (searchText == '') {

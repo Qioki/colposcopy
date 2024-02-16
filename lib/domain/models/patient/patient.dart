@@ -5,6 +5,7 @@ part 'patient.g.dart';
 
 @Freezed(equal: false, toStringOverride: false, toJson: true)
 class Patient with _$Patient {
+  @JsonSerializable()
   const factory Patient({
     int? patientId,
     required int userId,
