@@ -16,11 +16,11 @@ dependencies:
   intl: ^0.18.1
 
   #####  Camera  #####
-  camera_platform_interface: ^2.1.2
-  camera_base:
-    path: ../camera_base
-  camera_windows:
-    path: ../camera_windows
+  # camera_platform_interface: ^2.1.2
+  # camera_base:
+  #   path: ../camera_base
+  # camera_windows:
+  #   path: ../camera_windows
   ####################
 
   cupertino_icons: ^1.0.2

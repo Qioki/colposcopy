@@ -9,20 +9,26 @@ class AppControllerImpl extends AppController {
 
   final SettingsController settingsController;
 
-  AppSession appSession = const AppSession.initial();
+  @override
+  AppSession get appSession => _appSession;
+  AppSession _appSession = const AppSession.inactive();
 
   @override
   void onLogin(User user) {
     print('successful login');
-    appSession = AppSession.loggedIn(currentUser: user);
+    _appSession = AppSession.active(currentUser: user);
   }
 
   @override
-  void onLogout() {}
+  void onLogout() {
+    _appSession = const AppSession.inactive();
+  }
 }
 
 abstract class AppController {
   void onLogin(User user);
 
   void onLogout();
+
+  AppSession get appSession;
 }

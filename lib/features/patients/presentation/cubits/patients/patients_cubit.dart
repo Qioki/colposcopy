@@ -101,6 +101,7 @@ class PatientsCubit extends Cubit<PatientsState> {
       DataCell(Text(
         '${e.lastname} ${e.firstname} ${e.patronymic ?? ''}',
         style: TextStyle(fontWeight: fontWeight),
+        maxLines: 1,
       )),
       DataCell(Text(
         e.birthdate == null ? '' : _dateOnlyFormatter.format(e.birthdate!),
@@ -117,10 +118,12 @@ class PatientsCubit extends Cubit<PatientsState> {
       DataCell(Text(
         e.snils ?? '',
         style: TextStyle(fontWeight: fontWeight),
+        maxLines: 1,
       )),
       DataCell(Text(
         e.policy ?? '',
         style: TextStyle(fontWeight: fontWeight),
+        maxLines: 1,
       )),
     ];
   }

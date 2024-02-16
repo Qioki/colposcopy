@@ -1,7 +1,6 @@
 import 'package:colposcopy/core/constants/strings.dart';
 import 'package:colposcopy/features/auth/presentation/cubits/auth/auth_cubit.dart';
 import 'package:colposcopy/presentation/routes/app_router.dart';
-import 'package:colposcopy/presentation/theme/app_theme.dart';
 import 'package:colposcopy/presentation/widgets/logo_zmir_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,10 +16,8 @@ class MainNavBarWidget extends StatelessWidget {
         boxShadow: [BoxShadow()],
       ),
       child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(child: child),
-          // const Spacer(),
           const MainNavBarRightButtonsWidget(),
         ],
       ),
@@ -37,7 +34,6 @@ class MainNavBarRightButtonsWidget extends StatelessWidget {
     return IntrinsicHeight(
       child: Row(
         children: [
-          // const SizedBox(width: 30),
           const VerticalDivider(
               thickness: 0.5,
               indent: 9,
@@ -46,7 +42,6 @@ class MainNavBarRightButtonsWidget extends StatelessWidget {
               color: Colors.black54),
           IconButton(
             tooltip: Strings.settings,
-            // TextButton.icon(
             onPressed: () {},
             icon: const Icon(
               Icons.settings,
@@ -54,15 +49,12 @@ class MainNavBarRightButtonsWidget extends StatelessWidget {
               // color: AppColors.primary,
               size: 20,
             ),
-            // label: const Text(Strings.settings),
           ),
           const SizedBox(width: 15),
           IconButton(
-            // TextButton.icon(
             onPressed: () {
               if (cubit.tryLogout()) {
-                // const ExaminationRoute().go(context);
-                // const LoginRoute().go(context);
+                const LoginRoute().go(context);
               }
             },
             icon: const Icon(
@@ -70,10 +62,8 @@ class MainNavBarRightButtonsWidget extends StatelessWidget {
               color: Colors.black54,
               size: 20,
             ),
-            // label: const Text(Strings.menuLogOut),
             tooltip: Strings.menuUserLogOut,
           ),
-          // const SizedBox(width: 15),
           const VerticalDivider(
               thickness: 0.5,
               indent: 9,

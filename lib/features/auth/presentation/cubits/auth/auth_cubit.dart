@@ -108,6 +108,8 @@ class AuthCubit extends Cubit<AuthState> {
     // TODO: check if user exists
     var userId = await _repository.addUser(User.fromJson(userJson));
 
+    locator<AppRouter>().pop(Screens.patients);
+
     _tryLogin(userId, password);
   }
 

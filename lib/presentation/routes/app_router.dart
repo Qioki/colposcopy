@@ -6,7 +6,6 @@ import 'package:colposcopy/features/patient/presentation/forms/patient_card_form
 import 'package:colposcopy/features/patient/presentation/screens/patient_screen.dart';
 import 'package:colposcopy/features/patients/presentation/screens/patients_screen.dart';
 import 'package:colposcopy/features/protocol/presentation/screens/protocol_screen.dart';
-import 'package:colposcopy/features/visit/presentation/screens/visit_screen.dart';
 import 'package:colposcopy/presentation/screens/visit_main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -21,23 +20,15 @@ class AppRouter {
     _router = GoRouter(
       initialLocation: Screens.patient,
       routes: $appRoutes,
-      // redirect: (BuildContext context, GoRouterState state) { return null; },
+      redirect: (BuildContext context, GoRouterState state) {
+        return null;
+      },
     );
     return _router;
   }
 
   static void goModal(String name, BuildContext context, {dynamic arguments}) {
     switch (name) {
-      case Modals.patientCard:
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => const AlertDialog(
-            contentPadding: EdgeInsets.all(0),
-            content: PatientCardForm(),
-            backgroundColor: Colors.white,
-          ),
-        );
-        break;
       case Modals.signUp:
         showDialog(
           context: context,
@@ -54,7 +45,9 @@ class AppRouter {
 
   static Widget getProtocolScreen() => const ProtocolScreen();
 
+  void pop(String path) => _router.pop(path);
   void go(String path) => _router.go(path);
+  void push(String path) => _router.push(path);
 }
 
 @TypedStatefulShellRoute<VisitMainShellRouteData>(

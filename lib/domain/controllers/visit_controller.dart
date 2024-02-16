@@ -22,4 +22,9 @@ class VisitController {
   void setActiveVisit(Visit visit) {
     activeVisit = visit;
   }
+
+  void newPatient() {
+    activePatient = null;
+    activeVisit = null;
+  }
 }
